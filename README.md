@@ -43,21 +43,24 @@ git clone [https://github.com/alexiahellsten/freakyfashion-react.git](https://gi
 cd freakyfashion-react
 
 ### 3. Install dependencies:
+```
 cd client
 npm install
 
 cd ..
 cd server
 npm install
+```
 
 ### 4. Start the development server:
+```
 cd client
 npm run dev
 
 cd server
 npm run develop
 npm run build
-
+```
 ### 5. Open your browser and visit [http://localhost:3000](http://localhost:3000).
 
 ## License
