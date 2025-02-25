@@ -40,13 +40,23 @@ Follow these steps to get the project up and running locally:
 git clone [https://github.com/alexiahellsten/freakyfashion-react.git](https://github.com/alexiahellsten/freakyfashion-react.git)
 
 ### 2. Navigate into the project directory:
-cd your-repository-name
+cd freakyfashion-react
 
 ### 3. Install dependencies:
+cd client
+npm install
+
+cd ..
+cd server
 npm install
 
 ### 4. Start the development server:
-npm start
+cd client
+npm run dev
+
+cd server
+npm run develop
+npm run build
 
 ### 5. Open your browser and visit [http://localhost:3000](http://localhost:3000).
 
