@@ -21,7 +21,8 @@ The project is created as part of a school assignment to learn the React JS libr
 ## Tech Stack
 
 - **Frontend**:
-  - React
+  - React & Vite
+  - Tailwind CSS
   - JavaScript (ES6+)
   - React Router
   - Fetch (for API requests)
