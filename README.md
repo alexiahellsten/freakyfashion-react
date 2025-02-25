@@ -57,7 +57,9 @@ npm install
 cd client
 npm run dev
 
+cd ..
 cd server
+
 npm run develop
 npm run build
 ```
