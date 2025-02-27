@@ -1,38 +1,39 @@
-import { Search, Heart, ShoppingCart } from "lucide-react";
+import { Link } from "react-router";
+import NavIcons from "./NavIcons";
+import SearchBar from "./SearchBar";
 
 function Navbar() {
   return (
-    <nav className="bg-neutral p-4">
-      <div className="flex items-center justify-between w-full mx-auto">
-        <div className="flex items-center space-x-4 ml-0">
+    <nav>
+      <div className="mx-auto px-4 py-3 flex flex-col space-y-3 sm:flex-row sm:justify-between sm:space-y-0">
+        <div>
           <img
-            src="https://placehold.co/400x400.png"
+            src="https://placehold.co/300x180.png"
             alt="Logo"
-            className="h-8 sm:h-10 md:h-12 lg:h-16"
+            className="min-w-full"
           />
         </div>
-
-        <div className="flex-1 mx-4 relative max-w-md">
-          <input
-            type="text"
-            placeholder="Search..."
-            className="w-full p-2 pl-10 rounded-lg border border-gray-300 text-black"
-          />
-          <Search
-            size={20}
-            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black"
-          />
-        </div>
-
-        <div className="flex items-center space-x-6 mr-0">
-          <button className="text-black">
-            <ShoppingCart />
-          </button>
-          <button className="text-black">
-            <Heart />
-          </button>
+        <div className="flex items-center space-x-3 w-full">
+          <div className="flex-1 sm:px-10">
+            <SearchBar />
+          </div>
+          <NavIcons />
         </div>
       </div>
+      <nav className="w-full px-4 flex flex-col space-y-2 text-sm md:flex-row md:space-y-0 md:space-x-6">
+        <Link to="/nyheter" className="text-foreground hover:text-primary">
+          Nyheter
+        </Link>
+        <Link to="/topplistan" className="text-foreground hover:text-primary">
+          Topplistan
+        </Link>
+        <Link to="/rea" className="text-foreground hover:text-primary">
+          Rea
+        </Link>
+        <Link to="/kampanjer" className="text-foreground hover:text-primary">
+          Kampanjer
+        </Link>
+      </nav>
     </nav>
   );
 }

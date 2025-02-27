@@ -1,14 +1,19 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { BrowserRouter } from "react-router";
+// import { useState } from "react";
 import Navbar from "./components/Navbar/Navbar";
+import Hero from "./components/Hero/Hero";
+import Spots from "./components/Spots/Spots";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
-      <Navbar />
-      <Button variant="outline">Button</Button>
+      <BrowserRouter>
+        <Navbar />
+        <main className="flex flex-col justify-center gap-2.5">
+          <Hero />
+          <Spots className="hidden lg:visible" />
+        </main>
+      </BrowserRouter>
     </>
   );
 }
