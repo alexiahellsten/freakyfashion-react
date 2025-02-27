@@ -10,7 +10,7 @@ function Hero() {
               alt="A hero image"
               width="600"
               height="400"
-              className="max-w-full object-cover"
+              className="min-w-full"
             />
           </figure>
 
@@ -18,20 +18,23 @@ function Hero() {
             <h1 className="text-xl mt-4 text-center sm:text-2xl lg:text-3xl font-semibold p-2">
               Hållbart mode
             </h1>
-            <p className="p-2">
-              Upptäck Freaky Fashion – unika, miljövänliga plagg & accessoarer,
-              skapade med stil och rättvisa i fokus. Hos Freaky Fashion
-              kombinerar vi unik design med omtanke för både människor och
-              planeten. Våra kläder och accessoarer tillverkas småskaligt av
-              högkvalitativa, miljövänliga material, vilket innebär hållbarhet
-              utan att kompromissa med stil. Genom rättvis produktion
-              säkerställer vi att alla som är involverade i processen får
-              rättvis ersättning och arbetar under etiska förhållanden. Varje
-              produkt är noggrant framtagen för att kännas lika bra som den ser
-              ut. När du handlar hos oss investerar du i plagg med personlighet
-              och lång livslängd, samtidigt som du bidrar till en hållbar
-              framtid. Freaky Fashion – där stil och samvete möts.
-            </p>
+            <div className="mx-auto">
+              <p className="p-2 md:mr-4">
+                Upptäck Freaky Fashion – unika, miljövänliga plagg &
+                accessoarer, skapade med stil och rättvisa i fokus. Hos Freaky
+                Fashion kombinerar vi unik design med omtanke för både människor
+                och planeten. Våra kläder och accessoarer tillverkas småskaligt
+                av högkvalitativa, miljövänliga material, vilket innebär
+                hållbarhet utan att kompromissa med stil. Genom rättvis
+                produktion säkerställer vi att alla som är involverade i
+                processen får rättvis ersättning och arbetar under etiska
+                förhållanden. Varje produkt är noggrant framtagen för att kännas
+                lika bra som den ser ut. När du handlar hos oss investerar du i
+                plagg med personlighet och lång livslängd, samtidigt som du
+                bidrar till en hållbar framtid. Freaky Fashion – där stil och
+                samvete möts.
+              </p>
+            </div>
           </div>
         </div>
       </section>
