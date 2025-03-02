@@ -1,0 +1,38 @@
+{
+  "kind": "collectionType",
+  "collectionName": "baskets",
+  "info": {
+    "singularName": "basket",
+    "pluralName": "baskets",
+    "displayName": "basket",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "basket"
+    },
+    "basketItems": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::basket.basket"
+    },
+    "basketItem": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::basket-item.basket-item",
+      "mappedBy": "basket"
+    },
+    "orders": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::order.order",
+      "mappedBy": "products"
+    }
+  }
+}

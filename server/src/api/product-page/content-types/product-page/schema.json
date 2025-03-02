@@ -1,0 +1,38 @@
+{
+  "kind": "singleType",
+  "collectionName": "product_pages",
+  "info": {
+    "singularName": "product-page",
+    "pluralName": "product-pages",
+    "displayName": "Product Page",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "productTitle": {
+      "type": "string"
+    },
+    "productBrand": {
+      "type": "string"
+    },
+    "productDescription": {
+      "type": "text"
+    },
+    "productImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "productQuantity": {
+      "type": "integer"
+    }
+  }
+}

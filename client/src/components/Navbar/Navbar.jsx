@@ -20,7 +20,7 @@ function Navbar() {
           <NavIcons />
         </div>
       </div>
-      <nav className="w-full px-4 flex flex-col space-y-2 text-sm md:flex-row md:space-y-0 md:space-x-6">
+      <nav className="link w-full px-4 flex flex-col space-y-2 text-sm md:flex-row md:space-y-0 md:space-x-6">
         <Link to="/nyheter" className="text-foreground hover:text-primary">
           Nyheter
         </Link>
