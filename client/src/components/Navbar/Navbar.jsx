@@ -1,16 +1,40 @@
 import { Link } from "react-router";
 import NavIcons from "./NavIcons";
 import SearchBar from "./SearchBar";
+import { useState, useEffect } from "react";
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 function Navbar() {
+  const [logo, setLogo] = useState(null);
+
+  useEffect(() => {
+    fetch(`${API_URL}/home?populate=*`)
+      .then((res) => res.json())
+      .then((data) =>
+        setLogo(
+          data.data.logotype.formats.thumbnail.url
+            ? `${API_URL.replace("/api", "")}${
+                data.data.logotype.formats.thumbnail.url
+              }`
+            : "https://placehold.co/400x150?text=Logo+Not+Found"
+        )
+      )
+      .catch(console.error);
+  }, []);
+
+  if (!logo) return <p>Logo not available.</p>;
+
   return (
     <nav>
       <div className="mx-auto px-4 py-3 flex flex-col space-y-3 sm:flex-row sm:justify-between sm:space-y-0">
         <div>
           <img
-            src="https://placehold.co/300x180.png"
+            src={logo}
             alt="Logo"
             className="min-w-full"
+            width={400}
+            height={150}
           />
         </div>
         <div className="flex items-center space-x-3 w-full">
