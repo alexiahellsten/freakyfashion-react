@@ -8,8 +8,10 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <Navbar />
-        <main className="flex flex-col justify-center gap-2.5">
+        <header>
+          <Navbar />
+        </header>
+        <main className="flex flex-col justify-center">
           <Hero />
           <Spots className="hidden lg:visible" />
         </main>

@@ -1,16 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
 @import "tailwindcss";
-/*---break---*/
-@plugin "tailwindcss-animate";
-/*---break---*/
-@custom-variant dark (&:is(.dark *));
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+@plugin "tailwindcss-animate";
+@custom-variant dark (&:is(.dark *));
+
 /*Space for custom CSS classes*/
 
-/*---break---*/
+html {
+  font-family: "DM Sans", sans-serif;
+}
 
 :root {
   --background: oklch(1 0 0);
@@ -223,8 +226,6 @@
 
   --color-sidebar-ring: var(--sidebar-ring);
 }
-
-/*---break---*/
 
 @layer base {
   * {

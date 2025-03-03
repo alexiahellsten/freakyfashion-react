@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_shared_product_grids",
+  "info": {
+    "displayName": "product_grid",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "products": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::product.product"
+    },
+    "productCard": {
+      "displayName": "product_card",
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.product-card"
+    }
+  }
+}

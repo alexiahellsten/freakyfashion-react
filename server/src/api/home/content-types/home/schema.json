@@ -1,0 +1,37 @@
+{
+  "kind": "singleType",
+  "collectionName": "homes",
+  "info": {
+    "singularName": "home",
+    "pluralName": "homes",
+    "displayName": "Home",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "productGrid": {
+      "displayName": "product_grid",
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.product-grid"
+    },
+    "dynamicZone": {
+      "type": "dynamiczone",
+      "components": [
+        "shared.product-grid"
+      ]
+    },
+    "logotype": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    }
+  }
+}
