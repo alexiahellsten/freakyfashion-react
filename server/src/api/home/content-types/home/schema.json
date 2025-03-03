@@ -11,40 +11,6 @@
     "draftAndPublish": true
   },
   "attributes": {
-    "heroTitle": {
-      "type": "string"
-    },
-    "heroDescription": {
-      "type": "string"
-    },
-    "heroImage": {
-      "type": "media",
-      "multiple": true,
-      "required": false,
-      "allowedTypes": [
-        "files",
-        "images"
-      ]
-    },
-    "spotsText": {
-      "type": "string"
-    },
-    "spotCategories": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::category.category"
-    },
-    "spotImages": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
-      ]
-    },
     "productGrid": {
       "displayName": "product_grid",
       "type": "component",

@@ -565,6 +565,35 @@ export interface ApiGlobalGlobal extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiHeroHero extends Struct.SingleTypeSchema {
+  collectionName: 'heroes';
+  info: {
+    description: '';
+    displayName: 'Hero';
+    pluralName: 'heroes';
+    singularName: 'hero';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    image: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'> &
+      Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::hero.hero'> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiHomeHome extends Struct.SingleTypeSchema {
   collectionName: 'homes';
   info: {
@@ -581,22 +610,11 @@ export interface ApiHomeHome extends Struct.SingleTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     dynamicZone: Schema.Attribute.DynamicZone<['shared.product-grid']>;
-    heroDescription: Schema.Attribute.String;
-    heroImage: Schema.Attribute.Media<'files' | 'images', true>;
-    heroTitle: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::home.home'> &
       Schema.Attribute.Private;
     productGrid: Schema.Attribute.Component<'shared.product-grid', false>;
     publishedAt: Schema.Attribute.DateTime;
-    spotCategories: Schema.Attribute.Relation<
-      'oneToOne',
-      'api::category.category'
-    >;
-    spotImages: Schema.Attribute.Media<
-      'images' | 'files' | 'videos' | 'audios'
-    >;
-    spotsText: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1274,6 +1292,7 @@ declare module '@strapi/strapi' {
       'api::category.category': ApiCategoryCategory;
       'api::favorite.favorite': ApiFavoriteFavorite;
       'api::global.global': ApiGlobalGlobal;
+      'api::hero.hero': ApiHeroHero;
       'api::home.home': ApiHomeHome;
       'api::navigation.navigation': ApiNavigationNavigation;
       'api::order.order': ApiOrderOrder;
