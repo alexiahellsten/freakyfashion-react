@@ -33,6 +33,7 @@ function ProductGrid() {
           >
             <a href={`/products/${product.slug}`} className="flex flex-col">
               <div className="image-container w-full h-auto relative">
+                {/* TODO: Lägg till någon hover-effekt? */}
                 <img
                   src={imageUrl}
                   alt={product.name}
