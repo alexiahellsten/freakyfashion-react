@@ -4,7 +4,7 @@
   "info": {
     "singularName": "product",
     "pluralName": "products",
-    "displayName": "Product",
+    "displayName": "Products",
     "description": ""
   },
   "options": {
@@ -87,6 +87,9 @@
       "relation": "oneToMany",
       "target": "api::favorite.favorite",
       "mappedBy": "product"
+    },
+    "isNew": {
+      "type": "boolean"
     }
   }
 }

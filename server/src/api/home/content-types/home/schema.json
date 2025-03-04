@@ -11,19 +11,28 @@
     "draftAndPublish": true
   },
   "attributes": {
-    "productGrid": {
-      "displayName": "product_grid",
-      "type": "component",
-      "repeatable": false,
-      "component": "shared.product-grid"
-    },
-    "dynamicZone": {
-      "type": "dynamiczone",
-      "components": [
-        "shared.product-grid"
+    "logotype": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
       ]
     },
-    "logotype": {
+    "primaryNavigation": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.link"
+    },
+    "footerNavigation": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.link"
+    },
+    "spots": {
       "allowedTypes": [
         "images",
         "files",
@@ -31,7 +40,7 @@
         "audios"
       ],
       "type": "media",
-      "multiple": false
+      "multiple": true
     }
   }
 }

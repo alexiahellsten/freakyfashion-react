@@ -11,16 +11,16 @@
     "draftAndPublish": true
   },
   "attributes": {
-    "productTitle": {
+    "title": {
       "type": "string"
     },
-    "productBrand": {
+    "brand": {
       "type": "string"
     },
-    "productDescription": {
+    "description": {
       "type": "text"
     },
-    "productImage": {
+    "image": {
       "type": "media",
       "multiple": false,
       "required": false,
@@ -31,7 +31,7 @@
         "audios"
       ]
     },
-    "productQuantity": {
+    "quantity": {
       "type": "integer"
     }
   }

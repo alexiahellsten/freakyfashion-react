@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "spots",
+  "info": {
+    "singularName": "spot",
+    "pluralName": "spots",
+    "displayName": "Spot",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "image": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "title": {
+      "type": "string"
+    }
+  }
+}
