@@ -23,35 +23,6 @@ export interface SharedMedia extends Struct.ComponentSchema {
   };
 }
 
-export interface SharedProductCard extends Struct.ComponentSchema {
-  collectionName: 'components_shared_product_cards';
-  info: {
-    description: '';
-    displayName: 'product_card';
-  };
-  attributes: {
-    brandName: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'Freaky Fashion'>;
-    image: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
-    isFavorite: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
-    price: Schema.Attribute.Integer & Schema.Attribute.Required;
-    productName: Schema.Attribute.String;
-  };
-}
-
-export interface SharedProductGrid extends Struct.ComponentSchema {
-  collectionName: 'components_shared_product_grids';
-  info: {
-    description: '';
-    displayName: 'product_grid';
-  };
-  attributes: {
-    productCard: Schema.Attribute.Component<'shared.product-card', true>;
-    products: Schema.Attribute.Relation<'oneToOne', 'api::product.product'>;
-  };
-}
-
 export interface SharedRichText extends Struct.ComponentSchema {
   collectionName: 'components_shared_rich_texts';
   info: {
@@ -96,8 +67,6 @@ declare module '@strapi/strapi' {
     export interface ComponentSchemas {
       'shared.link': SharedLink;
       'shared.media': SharedMedia;
-      'shared.product-card': SharedProductCard;
-      'shared.product-grid': SharedProductGrid;
       'shared.rich-text': SharedRichText;
       'shared.seo': SharedSeo;
       'shared.slider': SharedSlider;
