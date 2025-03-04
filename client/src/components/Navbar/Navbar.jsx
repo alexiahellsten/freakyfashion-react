@@ -1,12 +1,14 @@
 import { Link } from "react-router";
+import { useState, useEffect } from "react";
+
 import NavIcons from "./NavIcons";
 import SearchBar from "./SearchBar";
-import { useState, useEffect } from "react";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 function Navbar() {
   const [logo, setLogo] = useState(null);
+  const [navigationLinks, setNavigationLinks] = useState([]);
 
   useEffect(() => {
     fetch(`${API_URL}/home?populate=*`)
@@ -17,13 +19,18 @@ function Navbar() {
             ? `${API_URL.replace("/api", "")}${
                 data.data.logotype.formats.thumbnail.url
               }`
-            : "https://placehold.co/400x150?text=Logo+Not+Found"
+            : "https://placehold.co/400x150?text=Freaky+Fashion"
         )
       )
       .catch(console.error);
-  }, []);
 
-  if (!logo) return <p>Logo not available.</p>;
+    fetch(`${API_URL}/home?populate=*`)
+      .then((res) => res.json())
+      .then((data) => {
+        setNavigationLinks(data.data.primaryNavigation) || [];
+      })
+      .catch(console.error);
+  }, []);
 
   return (
     <nav>
@@ -44,19 +51,16 @@ function Navbar() {
           <NavIcons />
         </div>
       </div>
-      <nav className="link w-full px-4 flex flex-col space-y-2 text-sm md:flex-row md:space-y-0 md:space-x-6">
-        <Link to="/nyheter" className="text-foreground hover:text-primary">
-          Nyheter
-        </Link>
-        <Link to="/topplistan" className="text-foreground hover:text-primary">
-          Topplistan
-        </Link>
-        <Link to="/rea" className="text-foreground hover:text-primary">
-          Rea
-        </Link>
-        <Link to="/kampanjer" className="text-foreground hover:text-primary">
-          Kampanjer
-        </Link>
+      <nav className="w-full px-4 flex flex-col space-y-2 text-sm md:flex-row md:space-y-0 md:space-x-6">
+        {navigationLinks.map((link) => (
+          <Link
+            key={link.id}
+            to={link.url}
+            className="text-foreground hover:text-primary"
+          >
+            {link.name}
+          </Link>
+        ))}
       </nav>
     </nav>
   );

@@ -610,10 +610,12 @@ export interface ApiHomeHome extends Struct.SingleTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     dynamicZone: Schema.Attribute.DynamicZone<['shared.product-grid']>;
+    footerNavigation: Schema.Attribute.Component<'shared.link', true>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::home.home'> &
       Schema.Attribute.Private;
     logotype: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    primaryNavigation: Schema.Attribute.Component<'shared.link', true>;
     productGrid: Schema.Attribute.Component<'shared.product-grid', false>;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;

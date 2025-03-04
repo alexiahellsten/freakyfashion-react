@@ -24,14 +24,25 @@
       ]
     },
     "logotype": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
+    },
+    "primaryNavigation": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.link"
+    },
+    "footerNavigation": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.link"
     }
   }
 }
