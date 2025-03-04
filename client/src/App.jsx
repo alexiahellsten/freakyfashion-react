@@ -3,6 +3,7 @@ import { BrowserRouter } from "react-router";
 import Navbar from "./components/Navbar/Navbar";
 import Hero from "./components/Hero/Hero";
 import Spots from "./components/Spots/Spots";
+import ProductGrid from "./components/ProductGrid/ProductGrid";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <main className="flex flex-col justify-center">
           <Hero />
           <Spots className="hidden lg:visible" />
+          <ProductGrid />
         </main>
       </BrowserRouter>
     </>

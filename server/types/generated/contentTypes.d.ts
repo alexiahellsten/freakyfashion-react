@@ -725,7 +725,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
   collectionName: 'products';
   info: {
     description: '';
-    displayName: 'Product';
+    displayName: 'Products';
     pluralName: 'products';
     singularName: 'product';
   };
@@ -751,6 +751,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       'plugin::users-permissions.user'
     >;
     image: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    isNew: Schema.Attribute.Boolean;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
