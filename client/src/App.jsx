@@ -1,13 +1,13 @@
 import { BrowserRouter, Routes, Route } from "react-router";
-import Home from "./Home/Home";
-import Products from "./Products/Products";
-import ProductDetails from "./Products/ProductDetails";
-import Search from "./Search/Search";
-import Basket from "./Basket/Basket";
-import Checkout from "./Checkout/Checkout";
-import Admin from "./Admin/Admin";
-import AdminProducts from "./Admin/Products";
-import NewProduct from "./Admin/NewProduct";
+import Home from "./pages/Home/Home";
+import Products from "./pages/Products/Products";
+import ProductDetails from "./pages/Products/ProductDetails";
+import Search from "./pages/Search/Search";
+import Basket from "./pages/Basket/Basket";
+import Checkout from "./pages/Checkout/Checkout";
+import Admin from "./pages/Admin/Admin";
+import AdminProducts from "./pages/Admin/Products";
+import NewProduct from "./pages/Admin/NewProduct";
 
 import Navbar from "./components/Navbar/Navbar";
 import Hero from "./components/Hero/Hero";
