@@ -12,7 +12,7 @@ function Hero() {
       .catch(console.error);
   }, []);
 
-  if (!hero) return <p>Hero section not available.</p>;
+  if (!hero) return <p>Hero inte tillgänglig.</p>;
 
   const heroImage = hero.image?.formats?.large?.url
     ? `${API_URL.replace("/api", "")}${hero.image.formats.large.url}`
