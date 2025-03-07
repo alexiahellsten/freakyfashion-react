@@ -1,0 +1,121 @@
+import { useState, useEffect } from "react";
+import { Link } from "react-router";
+import { Trash2 } from "lucide-react";
+import { Button, buttonVariants } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+const API_URL = import.meta.env.VITE_API_URL;
+
+function Table() {
+  const [filter, setFilter] = useState("all"); // "all", "published", "unpublished"
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    fetch(`${API_URL}/products?populate=*`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Fetched products:", data);
+        setProducts(data.data || []);
+      })
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+      });
+  }, []);
+
+  const filteredProducts = products.filter((product) => {
+    if (filter === "published") return product.state === "published";
+    if (filter === "unpublished") return product.state === "unpublished";
+    return true;
+  });
+
+  return (
+    <article className="w-full lg:w-3/4 p-4 bg-white">
+      <div className="flex flex-col sm:flex-row sm:justify-between items-center mb-4">
+        <h2 className="text-xl font-semibold mb-2 sm:mb-0">Produkter</h2>
+        <div className="flex gap-2 sm:ml-auto">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">Filtrera produkter</Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-44">
+              <DropdownMenuLabel>Välj filtrering</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuRadioGroup value={filter} onValueChange={setFilter}>
+                <DropdownMenuRadioItem value="all">Alla</DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="published">
+                  Publicerade
+                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="unpublished">
+                  Opublicerade
+                </DropdownMenuRadioItem>
+              </DropdownMenuRadioGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <Link
+            to="/admin/products/new"
+            className={buttonVariants({ variant: "outline" })}
+          >
+            Ny produkt
+          </Link>
+        </div>
+      </div>
+
+      <table className="w-full border border-black border-collapse text-left">
+        <thead>
+          <tr className="bg-neutral-400">
+            <th className="border-b border-r border-black px-3 py-2">Namn</th>
+            <th className="border-b border-r border-black px-3 py-2">SKU</th>
+            <th className="border-b border-r border-black px-3 py-2">Pris</th>
+            <th className="border-b border-r border-black px-3 py-2 text-center">
+              Hantera
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredProducts.length === 0 ? (
+            <tr>
+              <td colSpan="4" className="text-center py-4">
+                Inga produkter matchar filtret
+              </td>
+            </tr>
+          ) : (
+            filteredProducts.map((product) => (
+              <tr key={product.id}>
+                <td className="border-b border-r border-black px-3 py-2">
+                  {product.title}
+                </td>
+                <td className="border-b border-r border-black px-3 py-2">
+                  {product.sku}
+                </td>
+                <td className="border-b border-r border-black px-3 py-2">
+                  {product.price}
+                </td>
+                <td className="border-b border-r border-black px-3 py-2 text-center">
+                  {/* TODO: Ersätt med Strapi API url för delete */}
+                  <Link to="/delete">
+                    <Button
+                      variant="destructive"
+                      className="bg-red-200 text-foreground hover:bg-red-300"
+                    >
+                      <Trash2 className="icon" />
+                    </Button>
+                  </Link>
+                </td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+    </article>
+  );
+}
+export default Table;

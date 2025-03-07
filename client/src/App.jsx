@@ -9,41 +9,21 @@ import Admin from "./pages/Admin/Admin";
 import AdminProducts from "./pages/Admin/Products";
 import NewProduct from "./pages/Admin/NewProduct";
 
-import Navbar from "./components/Navbar/Navbar";
-import Hero from "./components/Hero/Hero";
-import Spots from "./components/Spots/Spots";
-import ProductGrid from "./components/ProductGrid/ProductGrid";
-import Footer from "./components/Footer/Footer";
-
 function App() {
   return (
-    <>
-      <BrowserRouter>
-        <header>
-          <Navbar />
-        </header>
-
-        <Routes>
-          <Route index element={<Home />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/products/:slug" element={<ProductDetails />} />
-          <Route path="/basket" element={<Basket />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/admin/products" element={<AdminProducts />} />
-          <Route path="/admin/products/new" element={<NewProduct />} />
-        </Routes>
-
-        <main className="flex flex-col justify-center">
-          <Hero />
-          <Spots className="hidden lg:visible" />
-          <ProductGrid />
-        </main>
-
-        <Footer />
-      </BrowserRouter>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" index element={<Home />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/products" element={<Products />} />
+        <Route path="/products/:slug" element={<ProductDetails />} />
+        <Route path="/basket" element={<Basket />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/admin" element={<Admin />} />
+        <Route path="/admin/products" element={<AdminProducts />} />
+        <Route path="/admin/products/new" element={<NewProduct />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
