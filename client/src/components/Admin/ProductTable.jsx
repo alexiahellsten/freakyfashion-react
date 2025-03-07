@@ -12,9 +12,20 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
 const API_URL = import.meta.env.VITE_API_URL;
 
-function Table() {
+function ProductTable() {
   const [filter, setFilter] = useState("all"); // "all", "published", "unpublished"
   const [products, setProducts] = useState([]);
 
@@ -69,53 +80,60 @@ function Table() {
         </div>
       </div>
 
-      <table className="w-full border border-black border-collapse text-left">
-        <thead>
-          <tr className="bg-neutral-400">
-            <th className="border-b border-r border-black px-3 py-2">Namn</th>
-            <th className="border-b border-r border-black px-3 py-2">SKU</th>
-            <th className="border-b border-r border-black px-3 py-2">Pris</th>
-            <th className="border-b border-r border-black px-3 py-2 text-center">
-              Hantera
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredProducts.length === 0 ? (
-            <tr>
-              <td colSpan="4" className="text-center py-4">
-                Inga produkter matchar filtret
-              </td>
-            </tr>
-          ) : (
-            filteredProducts.map((product) => (
-              <tr key={product.id}>
-                <td className="border-b border-r border-black px-3 py-2">
-                  {product.title}
-                </td>
-                <td className="border-b border-r border-black px-3 py-2">
-                  {product.sku}
-                </td>
-                <td className="border-b border-r border-black px-3 py-2">
-                  {product.price}
-                </td>
-                <td className="border-b border-r border-black px-3 py-2 text-center">
-                  {/* TODO: Ersätt med Strapi API url för delete */}
-                  <Link to="/delete">
-                    <Button
-                      variant="destructive"
-                      className="bg-red-200 text-foreground hover:bg-red-300"
-                    >
-                      <Trash2 className="icon" />
-                    </Button>
-                  </Link>
+      <div className="overflow-hidden rounded-md border">
+        <Table className="w-full text-left">
+          <TableHeader>
+            <TableRow className="bg-gray-100">
+              <TableHead className="text-black font-semibold border-b border-r px-3 py-2">
+                Namn
+              </TableHead>
+              <TableHead className="text-black font-semibold border-b border-r px-3 py-2">
+                SKU
+              </TableHead>
+              <TableHead className="text-black font-semibold border-b border-r px-3 py-2">
+                Pris
+              </TableHead>
+              <TableHead className="text-black font-semibold border-b px-3 py-2 text-center">
+                Hantera
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filteredProducts.length === 0 ? (
+              <tr>
+                <td colSpan="4" className="text-center py-4">
+                  Inga produkter matchar filtret
                 </td>
               </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+            ) : (
+              filteredProducts.map((product) => (
+                <TableRow key={product.id} className="even:bg-muted/50">
+                  <TableCell className="border-b border-r px-3 py-2">
+                    {product.title}
+                  </TableCell>
+                  <TableCell className="border-b border-r px-3 py-2">
+                    {product.sku}
+                  </TableCell>
+                  <TableCell className="border-b border-r px-3 py-2">
+                    {product.price} SEK
+                  </TableCell>
+                  <TableCell className="border-b px-3 py-2 text-center">
+                    <Link to="/delete">
+                      <Button
+                        variant="destructive"
+                        className="bg-red-200 text-foreground hover:bg-red-300"
+                      >
+                        <Trash2 className="icon" />
+                      </Button>
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </div>
     </article>
   );
 }
-export default Table;
+export default ProductTable;
