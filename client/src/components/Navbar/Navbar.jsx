@@ -36,13 +36,15 @@ function Navbar() {
     <nav className="mx-auto p-4">
       <div className="mx-auto px-4 py-3 flex flex-col space-y-3 sm:flex-row sm:justify-between sm:space-y-0">
         <div>
-          <img
-            src={logo}
-            alt="Logo"
-            className="min-w-full"
-            width={400}
-            height={150}
-          />
+          <Link to="/">
+            <img
+              src={logo}
+              alt="Logo"
+              className="min-w-full"
+              width={400}
+              height={150}
+            />
+          </Link>
         </div>
         <div className="flex items-center space-x-3 w-full">
           <div className="flex-1 sm:px-10">
