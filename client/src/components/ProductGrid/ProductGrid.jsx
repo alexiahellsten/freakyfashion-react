@@ -42,6 +42,7 @@ function ProductGrid() {
                 />
               </div>
               <div className="new-container">
+                {/* TODO: Fixa nyhetsbadgens logik - ska visas endast om produkten publicerades för mindre än 7 dagar sedan*/}
                 {(product.isNew === true || product.isNew === 1) && (
                   <div className="text-block absolute top-[5px] left-3">
                     <p className="absolute top-2.5 left-0.5 p-2 text-white bg-black rounded-[10px]">

@@ -756,7 +756,6 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     price: Schema.Attribute.Integer & Schema.Attribute.Required;
     products: Schema.Attribute.Relation<'manyToMany', 'api::product.product'>;
-    publicationDate: Schema.Attribute.Date;
     publishedAt: Schema.Attribute.DateTime;
     similarProducts: Schema.Attribute.Relation<
       'manyToMany',
