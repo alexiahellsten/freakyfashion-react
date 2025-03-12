@@ -37,7 +37,7 @@ function ProductGrid() {
                 {/* TODO: Lägg till någon hover-effekt? */}
                 <img
                   src={imageUrl}
-                  alt={product.name}
+                  alt={product.title}
                   className="w-full md:h-110 g:h-120 object-cover"
                 />
               </div>

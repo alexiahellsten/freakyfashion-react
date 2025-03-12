@@ -1,7 +1,7 @@
 import Navbar from "../../components/Navbar/Navbar";
 import Hero from "../../components/Hero/Hero";
 import Spots from "../../components/Spots/Spots";
-import ProductGrid from "../../components/ProductGrid/ProductGrid"; // Include ProductGrid only if it's exclusive to Home
+import ProductGrid from "../../components/ProductGrid/ProductGrid";
 import Footer from "../../components/Footer/Footer";
 import StoreInformation from "../../components/StoreInformation/StoreInformation";
 

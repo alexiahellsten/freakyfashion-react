@@ -14,7 +14,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" index element={<Home />} />
-        <Route path="/search" element={<Search />} />
+        {/* <Route path="/search" element={<Search />} /> */}
+        <Route path="/search/:slug" element={<Search />} />
         <Route path="/products" element={<Products />} />
         <Route path="/products/:slug" element={<ProductDetails />} />
         <Route path="/basket" element={<Basket />} />
