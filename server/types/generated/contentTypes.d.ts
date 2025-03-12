@@ -369,6 +369,31 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiAdminAdmin extends Struct.SingleTypeSchema {
+  collectionName: 'admins';
+  info: {
+    displayName: 'Admin';
+    pluralName: 'admins';
+    singularName: 'admin';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::admin.admin'> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiBasketItemBasketItem extends Struct.CollectionTypeSchema {
   collectionName: 'basket_items';
   info: {
@@ -731,7 +756,6 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     price: Schema.Attribute.Integer & Schema.Attribute.Required;
     products: Schema.Attribute.Relation<'manyToMany', 'api::product.product'>;
-    publicationDate: Schema.Attribute.Date;
     publishedAt: Schema.Attribute.DateTime;
     similarProducts: Schema.Attribute.Relation<
       'manyToMany',
@@ -1291,6 +1315,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::admin.admin': ApiAdminAdmin;
       'api::basket-item.basket-item': ApiBasketItemBasketItem;
       'api::basket.basket': ApiBasketBasket;
       'api::category.category': ApiCategoryCategory;

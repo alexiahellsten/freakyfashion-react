@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Heart } from "lucide-react";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -17,7 +18,7 @@ function ProductGrid() {
       });
   }, []);
 
-  if (!products) return <p>Products section not available.</p>;
+  if (!products) return <p>Produkter inte tillgängliga.</p>;
 
   return (
     <div className="product-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 m-2.5 w-full">
@@ -36,11 +37,12 @@ function ProductGrid() {
                 {/* TODO: Lägg till någon hover-effekt? */}
                 <img
                   src={imageUrl}
-                  alt={product.name}
+                  alt={product.title}
                   className="w-full md:h-110 g:h-120 object-cover"
                 />
               </div>
-              {/* <div className="new-container">
+              <div className="new-container">
+                {/* TODO: Fixa nyhetsbadgens logik - ska visas endast om produkten publicerades för mindre än 7 dagar sedan*/}
                 {(product.isNew === true || product.isNew === 1) && (
                   <div className="text-block absolute top-[5px] left-3">
                     <p className="absolute top-2.5 left-0.5 p-2 text-white bg-black rounded-[10px]">
@@ -48,21 +50,19 @@ function ProductGrid() {
                     </p>
                   </div>
                 )}
-              </div> */}
+              </div>
             </a>
-            {/* 
-            TODO: Ersätt med Lucide-React ikoner
             <div className="heart-container relative">
               <div className="heart-icon absolute text-2xl text-black bottom-2.5 right-2.5 z-10">
                 <a href={`/products/${product.slug}`}>
                   {product.isFavourite ? (
-                    <i className="fa-solid fa-heart"></i>
+                    <Heart fill="black" stroke="black" />
                   ) : (
-                    <i className="fa-regular fa-heart"></i>
+                    <Heart />
                   )}
                 </a>
               </div>
-            </div> */}
+            </div>
             <div className="product-description-container">
               <div className="product-description flex justify-between w-full">
                 <h2 className="text-xl font-semibold">{product.title}</h2>

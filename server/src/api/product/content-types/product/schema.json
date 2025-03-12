@@ -28,9 +28,6 @@
       "type": "integer",
       "required": true
     },
-    "publicationDate": {
-      "type": "date"
-    },
     "image": {
       "type": "media",
       "multiple": false,
