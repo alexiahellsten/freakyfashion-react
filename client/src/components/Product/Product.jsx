@@ -1,38 +1,9 @@
-import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-const ProductPage = () => {
-  const { slug } = useParams();
-  const [product, setProduct] = useState(null);
-
-  useEffect(() => {
-    async function fetchProduct() {
-      try {
-        const response = await fetch(`${API_URL}/products?populate=*`);
-        const data = await response.json();
-
-        const filteredProduct = data.data.find(
-          (product) => product.slug === slug
-        );
-
-        if (filteredProduct) {
-          setProduct(filteredProduct);
-        } else {
-          console.log("Product not found");
-        }
-      } catch (error) {
-        console.error("Fel vid hämtning av produkt", error);
-      }
-    }
-
-    fetchProduct();
-  }, [slug]);
-
-  if (!product) return <div>Loading...</div>;
-
+const Product = ({ product }) => {
   const imageUrl = product.image?.url
     ? `${API_URL.replace("/api", "")}${product.image.url}`
     : "https://placehold.co/600x400?text=Image+Not+Found";
@@ -64,4 +35,4 @@ const ProductPage = () => {
   );
 };
 
-export default ProductPage;
+export default Product;
