@@ -61,7 +61,7 @@ function ProductGrid() {
             <div className="product-description-container">
               <div className="product-description flex justify-between w-full">
                 <h2 className="text-xl font-semibold">{product.name}</h2>
-                <h2 className="text-xl font-semibold">{product.price}</h2>
+                <h2 className="text-xl font-semibold">{product.price} SEK</h2>
               </div>
               <div className="brand-name text-center mt-2">
                 <p className="text-left">{product.brand}</p>
