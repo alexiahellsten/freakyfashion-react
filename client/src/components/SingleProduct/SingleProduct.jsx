@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router"; // Make sure to import from 'react-router-dom' instead of 'react-router'
+import { Link, useParams } from "react-router";
 import { Button } from "@/components/ui/button";
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = "http://localhost:8000";
 
 const ProductPage = () => {
   const { slug } = useParams();
@@ -14,8 +14,10 @@ const ProductPage = () => {
         const response = await fetch(`${API_URL}/api/products/${slug}`);
         const data = await response.json();
 
-        if (data) {
-          setProduct(data); // Assuming 'data' is a single product here
+        console.log("Fetched product data:", data);
+
+        if (data && data.product) {
+          setProduct(data.product);
         } else {
           console.log("Product not found");
         }
@@ -29,20 +31,14 @@ const ProductPage = () => {
 
   if (!product) return <div>Loading...</div>;
 
-  const imageUrl = product.image
-    ? `/images/${product.image}` // Assuming the product image is stored in /public/images/
-    : "https://placehold.co/600x400?text=Image+Not+Found";
+  const imageUrl = `/images/${product.image}`;
 
   return (
     <div>
       <div className="product-details flex flex-col w-full">
         <article className="product-card chosen-product flex flex-col sm:flex-row p-2.5">
           <div className="image-container w-full sm:w-1/2 lg:w-1/3">
-            <img
-              src={imageUrl} // Render the image based on the constructed URL
-              alt={product.name} // Use 'name' instead of 'title' if 'name' is more appropriate in your data
-              className="w-full"
-            />
+            <img src={imageUrl} alt={product.name} className="w-full" />
           </div>
           <div className="product-description-container flex flex-col justify-start w-full sm:w-1/2 lg:w-2/3 p-5 space-y-2">
             <h2 className="text-2xl font-semibold">{product.name}</h2>{" "}
