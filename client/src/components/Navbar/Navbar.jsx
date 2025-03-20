@@ -5,8 +5,7 @@ import SearchBar from "./SearchBar";
 
 function Navbar({ onSearch }) {
   const logo = "/images/logo.png";
-
-  const [searchQuery, setSearchQuery] = useState(""); // Maintain search query state
+  const [searchQuery, setSearchQuery] = useState("");
 
   const navigationLinks = [
     { id: 1, name: "Nyheter", url: "/nyheter" },
@@ -20,11 +19,17 @@ function Navbar({ onSearch }) {
     onSearch(query);
   };
 
+  //Återställer tillståndet av searchQuery så att alla produkter visas igen
+  const handleLogoClick = () => {
+    setSearchQuery("");
+    onSearch("");
+  };
+
   return (
     <nav className="mx-auto p-4">
       <div className="mx-auto px-4 py-3 flex flex-col space-y-3 sm:flex-row sm:justify-between sm:space-y-0">
         <div>
-          <Link to="/">
+          <Link to="/" onClick={handleLogoClick}>
             <img
               src={logo}
               alt="Logo"
@@ -36,7 +41,6 @@ function Navbar({ onSearch }) {
         </div>
         <div className="flex items-center space-x-3 w-full">
           <div className="flex-1 sm:px-10">
-            {/* Pass the handleSearch function to SearchBar */}
             <SearchBar onSearch={handleSearch} />
           </div>
           <NavIcons />

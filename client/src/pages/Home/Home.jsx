@@ -45,6 +45,7 @@ function Home() {
       );
       setFilteredProducts(filtered);
     } else {
+      //Återställer till den originala arrayen av produkter när man suddar ut söktermen
       setFilteredProducts(products);
     }
   };
@@ -65,7 +66,8 @@ function Home() {
             </h2>
           </div>
         )}
-        <ProductGrid products={filteredProducts} /> <StoreInformation />
+        <ProductGrid products={filteredProducts} />
+        <StoreInformation />
       </main>
       <Footer />
     </>
