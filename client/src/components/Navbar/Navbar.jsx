@@ -1,36 +1,17 @@
 import { Link } from "react-router";
-import { useState, useEffect } from "react";
 
 import NavIcons from "./NavIcons";
 import SearchBar from "./SearchBar";
 
-const API_URL = import.meta.env.VITE_API_URL;
-
 function Navbar() {
-  const [logo, setLogo] = useState(null);
-  const [navigationLinks, setNavigationLinks] = useState([]);
+  const logo = "/images/logo.png";
 
-  useEffect(() => {
-    fetch(`${API_URL}/home?populate=*`)
-      .then((res) => res.json())
-      .then((data) =>
-        setLogo(
-          data.data.logotype.formats.thumbnail.url
-            ? `${API_URL.replace("/api", "")}${
-                data.data.logotype.formats.thumbnail.url
-              }`
-            : "https://placehold.co/400x150?text=Freaky+Fashion"
-        )
-      )
-      .catch(console.error);
-
-    fetch(`${API_URL}/home?populate=*`)
-      .then((res) => res.json())
-      .then((data) => {
-        setNavigationLinks(data.data.primaryNavigation) || [];
-      })
-      .catch(console.error);
-  }, []);
+  const navigationLinks = [
+    { id: 1, name: "Nyheter", url: "/nyheter" },
+    { id: 2, name: "Topplistan", url: "/topplistan" },
+    { id: 3, name: "Rea", url: "/rea" },
+    { id: 4, name: "Kampanjer", url: "/kampanjer" },
+  ];
 
   return (
     <nav className="mx-auto p-4">

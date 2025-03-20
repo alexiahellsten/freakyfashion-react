@@ -3,10 +3,7 @@ import { useParams } from "react-router";
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import StoreInformation from "../../components/StoreInformation/StoreInformation";
-import Product from "../../components/Product/Product";
-import Slideshow from "../../components/Slideshow/Slideshow";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import SingleProduct from "../../components/SingleProduct/SingleProduct";
 
 function ProductDetails() {
   const { slug } = useParams();
@@ -51,8 +48,7 @@ function ProductDetails() {
         <Navbar />
       </header>
       <main className="flex flex-col justify-center">
-        <Product product={product} />
-        <Slideshow products={similarProducts} />
+        <SingleProduct />
         <StoreInformation />
       </main>
       <Footer />

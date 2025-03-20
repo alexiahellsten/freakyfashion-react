@@ -23,7 +23,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const API_URL = import.meta.env.VITE_API_URL;
 
 function ProductTable() {
   const [filter, setFilter] = useState("all"); // "all", "published", "unpublished"

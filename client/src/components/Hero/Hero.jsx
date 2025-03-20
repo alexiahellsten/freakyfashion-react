@@ -1,22 +1,18 @@
-import { useState, useEffect } from "react";
-
-const API_URL = import.meta.env.VITE_API_URL;
-
 function Hero() {
-  const [hero, setHero] = useState(null);
-
-  useEffect(() => {
-    fetch(`${API_URL}/hero?populate=*`)
-      .then((res) => res.json())
-      .then((data) => setHero(data.data))
-      .catch(console.error);
-  }, []);
-
-  if (!hero) return <p>Hero inte tillgänglig.</p>;
-
-  const heroImage = hero.image?.formats?.large?.url
-    ? `${API_URL.replace("/api", "")}${hero.image.formats.large.url}`
-    : "https://placehold.co/600x400?text=Image+Not+Found";
+  const heroTitle = "Hållbart mode";
+  const heroDescription = `Upptäck Freaky Fashion – unika, miljövänliga plagg & accessoarer,
+              skapade med stil och rättvisa i fokus. Hos Freaky Fashion
+              kombinerar vi unik design med omtanke för både människor och
+              planeten. Våra kläder och accessoarer tillverkas småskaligt av
+              högkvalitativa, miljövänliga material, vilket innebär hållbarhet
+              utan att kompromissa med stil. Genom rättvis produktion
+              säkerställer vi att alla som är involverade i processen får
+              rättvis ersättning och arbetar under etiska förhållanden. Varje
+              produkt är noggrant framtagen för att kännas lika bra som den ser
+              ut. När du handlar hos oss investerar du i plagg med personlighet
+              och lång livslängd, samtidigt som du bidrar till en hållbar
+              framtid. Freaky Fashion - där stil och samvete möts.`;
+  const heroImage = "/images/vit-blus.jpg";
 
   return (
     <section className="flex justify-center items-center lg:p-2.5 lg:items-start lg:flex-row-reverse lg:flex-nowrap">
@@ -25,7 +21,7 @@ function Hero() {
           <figure className="max-w-md mx-auto">
             <img
               src={heroImage}
-              alt={hero.title || "Hero Image"}
+              alt={heroTitle || "Hero Image"}
               className="w-full h-auto object-cover"
             />
           </figure>
@@ -33,9 +29,9 @@ function Hero() {
 
         <div className="lg:order-1">
           <h1 className="text-xl mt-4 text-center sm:text-2xl lg:text-3xl font-semibold p-2">
-            {hero.title}
+            {heroTitle}
           </h1>
-          <p className="p-2">{hero.description[0]?.children[0]?.text}</p>
+          <p className="p-2">{heroDescription}</p>
         </div>
       </div>
     </section>

@@ -1,6 +1,6 @@
 # Freaky Fashion - React
 
-This is a full-stack fashion e-commerce store built with **React** for the frontend and **Strapi** for the backend. 
+This is a full-stack fashion e-commerce store built with **React** for the frontend and **SQLite** for the backend. 
 
 The project is created as part of a school assignment to learn the React JS library.
 
@@ -13,7 +13,7 @@ The project is created as part of a school assignment to learn the React JS libr
   - Add items to the shopping cart.
   - View the total price of the cart.
 
-- **Backend (Strapi)**:
+- **Backend (SQLite)**:
   - Product data management.
   - Admin dashboard to manage products and other content.
   - RESTful API to serve product data to the frontend.
@@ -28,9 +28,8 @@ The project is created as part of a school assignment to learn the React JS libr
   - Fetch (for API requests)
 
 - **Backend**:
-  - Strapi (Headless CMS)
-  - Node.js
   - SQLite
+  - Node.js
     
 
 ## Installation
