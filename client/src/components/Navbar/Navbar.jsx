@@ -1,10 +1,12 @@
+import { useState } from "react";
 import { Link } from "react-router";
-
 import NavIcons from "./NavIcons";
 import SearchBar from "./SearchBar";
 
-function Navbar() {
+function Navbar({ onSearch }) {
   const logo = "/images/logo.png";
+
+  const [searchQuery, setSearchQuery] = useState(""); // Maintain search query state
 
   const navigationLinks = [
     { id: 1, name: "Nyheter", url: "/nyheter" },
@@ -12,6 +14,11 @@ function Navbar() {
     { id: 3, name: "Rea", url: "/rea" },
     { id: 4, name: "Kampanjer", url: "/kampanjer" },
   ];
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    onSearch(query);
+  };
 
   return (
     <nav className="mx-auto p-4">
@@ -29,7 +36,8 @@ function Navbar() {
         </div>
         <div className="flex items-center space-x-3 w-full">
           <div className="flex-1 sm:px-10">
-            <SearchBar />
+            {/* Pass the handleSearch function to SearchBar */}
+            <SearchBar onSearch={handleSearch} />
           </div>
           <NavIcons />
         </div>

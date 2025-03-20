@@ -1,36 +1,7 @@
-import { useEffect, useState } from "react";
 import { Heart } from "lucide-react";
 
-const API_URL = "http://localhost:8000";
-
-function ProductGrid() {
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    fetch(`${API_URL}/api/products`)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Fetched products:", data);
-
-        const newProducts = data.filter((product) => {
-          return product.isNew === true || product.isNew === 1;
-        });
-
-        const oldProducts = data.filter((product) => {
-          return !(product.isNew === true || product.isNew === 1);
-        });
-
-        //Kombinerar gamla och nya produkter i en ny array
-        const sortedProducts = [...newProducts, ...oldProducts];
-
-        setProducts(sortedProducts);
-      })
-      .catch((error) => {
-        console.error("Error fetching products:", error);
-      });
-  }, []);
-
-  if (!products || products.length === 0) {
+function ProductGrid({ products }) {
+  if (!products) {
     return <p>Produkter inte tillgängliga.</p>;
   }
 
@@ -50,7 +21,7 @@ function ProductGrid() {
               />
             </div>
 
-            {(product.isNew === true || product.isNew === 1) && (
+            {product.isNew === 1 && (
               <div className="text-block absolute top-[5px] left-3">
                 <p className="absolute top-2.5 left-0.5 p-2 text-white bg-black rounded-[10px]">
                   Nyhet
