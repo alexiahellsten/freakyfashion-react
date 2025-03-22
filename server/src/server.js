@@ -10,6 +10,8 @@ import adminRouter from "./routes/admin.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+const port = 8000;
+
 const app = express();
 app.use(cors());
 app.use(express.json()); 
@@ -31,7 +33,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(port, () => {
+  console.log(`Application running on port ${port}`);
 });

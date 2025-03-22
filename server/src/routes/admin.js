@@ -4,11 +4,27 @@ import generateSlug from "../../db/utilities/generate-slug.js";
 
 const router = express.Router();
 
+// GET /admin
+router.get("/", (req, res, next) => {
+  try {
+    const sql = `
+       SELECT id, sku, name, price, brand, description, image, slug,
+      registrationDate, isNew, isFavourite, category
+      FROM products
+    `;
+    const rows = db.prepare(sql).all();
+    res.json({ products: rows }); // Return JSON instead of rendering
+  } catch (error) {
+    next(error);
+  }
+});
+
 // GET /admin/products
 router.get("/products", (req, res, next) => {
   try {
     const sql = `
-      SELECT id, sku, name, price, brand, description, image, slug, registrationDate, isNew, isFavourite
+     SELECT id, sku, name, price, brand, description, image, slug,
+      registrationDate, isNew, isFavourite, category
       FROM products
     `;
     const rows = db.prepare(sql).all();
@@ -36,12 +52,13 @@ router.post("/products/new", (req, res) => {
       slug: String(slug),
       registrationDate: String(registrationDate),
       isNew: Number(isNew),
-      isFavourite: 0
+      isFavourite: 0,
+      category: String(req.body.category)
     };
 
     const sql = `
       INSERT INTO products (sku, name, price, brand, description, image, slug, registrationDate, isNew, isFavourite)
-      VALUES (@sku, @name, @price, @brand, @description, @image, @slug, @registrationDate, @isNew, @isFavourite);
+      VALUES (@sku, @name, @price, @brand, @description, @image, @slug, @registrationDate, @isNew, @isFavourite, @category);
     `;
     db.prepare(sql).run(product);
 

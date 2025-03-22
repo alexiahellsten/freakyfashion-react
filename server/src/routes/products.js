@@ -2,6 +2,8 @@ import express from "express";
 const router = express.Router();
 import db from "../../db/db.js";
 
+// TODO: Lägg till category
+
 // GET /api/products + api/products?q=
 router.get("/", function (req, res, next) {
   const searchQuery = req.query.q; 
