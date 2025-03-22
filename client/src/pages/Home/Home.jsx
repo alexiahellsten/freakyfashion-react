@@ -57,7 +57,7 @@ function Home() {
         {!searchQuery && <Hero />}
       </header>
       <main className="flex flex-col justify-center">
-        <Spots />
+        {!searchQuery && <Spots />}
         {searchQuery && (
           <div className="text-center mb-4">
             <h2 className="text-xl font-semibold">
