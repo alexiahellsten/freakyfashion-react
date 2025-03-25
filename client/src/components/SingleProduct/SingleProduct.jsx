@@ -1,8 +1,10 @@
+import { v4 as uuidv4 } from "uuid";
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router";
+import { useNavigate, useParams, Link } from "react-router";
 import { Button } from "@/components/ui/button";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
+import { useBasket } from "../../contexts/BasketContext";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -10,12 +12,28 @@ import "swiper/css/pagination";
 
 const API_URL = "http://localhost:8000";
 
-const ProductPage = () => {
+const ProductPage = ({ initialProduct }) => {
+  const navigate = useNavigate();
+  const { dispatch } = useBasket();
   const { slug } = useParams();
-  const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState(null); // This will be the fetched product
   const [allProducts, setAllProducts] = useState([]);
   const [similarProducts, setSimilarProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const addToBasket = () => {
+    dispatch({
+      type: "ADD_ITEM",
+      payload: {
+        id: uuidv4(),
+        productId: product.id,
+        name: product.name,
+        price: product.price,
+        quantity: 1,
+      },
+    });
+    navigate("/basket");
+  };
 
   useEffect(() => {
     async function fetchProduct() {
@@ -64,7 +82,6 @@ const ProductPage = () => {
     fetchAllProducts();
   }, [product]);
 
-  // TODO: Fixa kategorifiltret - fungerar inte just nu
   useEffect(() => {
     if (!product || allProducts.length === 0) return;
 
@@ -110,12 +127,14 @@ const ProductPage = () => {
               asChild
               className="w-full sm:w-1/3 md:w-1/3 lg:w-1/5 p-1 mt-2"
             >
-              <a href="#">Lägg i varukorg</a>
+              {/* TODO: Fixa funktionalitet för Lägg till i varukorg-knappen */}
+              <button onClick={addToBasket}>Lägg till i varukorg</button>
             </Button>
           </div>
         </article>
       </div>
 
+      {/* TODO: Gör om detta till en enskild komponent */}
       {similarProducts.length > 0 && (
         <section className="min-w-full p-2.5 hidden sm:block">
           <div className="similar-products flex justify-center mb-3">
@@ -134,7 +153,7 @@ const ProductPage = () => {
             className="swiper mySwiper sm:w-3/4 lg:w-3/4 relative"
           >
             {similarProducts.map((p) => (
-              <SwiperSlide key={p.id}>
+              <SwiperSlide key={uuidv4()}>
                 <Link
                   to={`/products/${p.slug}`}
                   className="flex flex-col items-center"

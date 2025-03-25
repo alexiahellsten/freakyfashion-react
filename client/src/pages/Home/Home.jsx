@@ -17,13 +17,8 @@ function Home() {
     fetch(`${API_URL}/api/products`)
       .then((response) => response.json())
       .then((data) => {
-        const newProducts = data.filter((product) => {
-          return product.isNew === 1;
-        });
-
-        const oldProducts = data.filter((product) => {
-          return !(product.isNew === 1);
-        });
+        const newProducts = data.filter((product) => product.isNew === 1);
+        const oldProducts = data.filter((product) => !(product.isNew === 1));
 
         const sortedProducts = [...newProducts, ...oldProducts];
 
@@ -45,7 +40,6 @@ function Home() {
       );
       setFilteredProducts(filtered);
     } else {
-      //Återställer till den originala arrayen av produkter när man suddar ut söktermen
       setFilteredProducts(products);
     }
   };
@@ -56,8 +50,10 @@ function Home() {
         <Navbar onSearch={handleSearch} />
         {!searchQuery && <Hero />}
       </header>
+
       <main className="flex flex-col justify-center">
         {!searchQuery && <Spots />}
+
         {searchQuery && (
           <div className="text-center mb-4">
             <h2 className="text-xl font-semibold">
@@ -66,9 +62,11 @@ function Home() {
             </h2>
           </div>
         )}
+
         <ProductGrid products={filteredProducts} />
         <StoreInformation />
       </main>
+
       <Footer />
     </>
   );

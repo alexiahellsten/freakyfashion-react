@@ -1,4 +1,5 @@
 function Hero() {
+  // GÖR OM TILL PROPS I HOME?
   const heroTitle = "Hållbart mode";
   const heroDescription = `Upptäck Freaky Fashion – unika, miljövänliga plagg & accessoarer,
               skapade med stil och rättvisa i fokus. Hos Freaky Fashion
