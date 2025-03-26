@@ -1,5 +1,3 @@
-// import { useBasket } from "../../contexts/BasketContext";
-// import { useNavigate } from "react-router";
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import StoreInformation from "../../components/StoreInformation/StoreInformation";
@@ -14,16 +12,15 @@ function Checkout() {
       </header>
       <main className="flex flex-col justify-center">
         <section className="checkout w-full max-w-4xl mx-auto px-4">
-          <div className="flex justify-center">
+          <div className="flex justify-center sm:mt-10">
             <h2 className="text-2xl font-semibold text-center my-4">Kassa</h2>
           </div>
-
-          <div>
-            <BasketItems />
+          <BasketItems />
+          <div className="mt-10 mb-10">
             <CheckoutForm />
           </div>
-          <StoreInformation />
         </section>
+        <StoreInformation />
       </main>
       <Footer />
     </>

@@ -42,7 +42,15 @@ const basketReducer = (state, action) => {
         ),
       };
 
-//Om åtgärden (action.type) inte matchar något case returneras det nuvarande tillståndet oförändrat.
+    //Efter att användaren bekräftat sitt köp återgår arrayen till att vara tom.
+    case "CLEAR_BASKET":
+      return {
+        ...state,
+        basket: [],
+      };
+
+      
+// Om åtgärden (action.type) inte matchar något case returneras det nuvarande tillståndet oförändrat.
     default:
       return state;
   }
