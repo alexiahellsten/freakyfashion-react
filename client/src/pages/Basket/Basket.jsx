@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router";
+import { useNavigate } from "react-router";
 import { useBasket } from "../../contexts/BasketContext"; // Import the custom hook
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
@@ -21,6 +21,8 @@ import {
 function Basket() {
   //filteredProducts: En lista som lagrar produkterna som matchar sökningen.
   //searchQuery: En sträng som innehåller den aktuella sökfrågan.
+
+  const navigate = useNavigate();
 
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -228,9 +230,11 @@ function Basket() {
           </div>
 
           <div className="flex justify-center m-5">
-            <Button asChild className="p-6 m-4 text-xl">
-              {/* TODO: Fixa funktionalitet för Lägg till i varukorg-knappen */}
-              <Link to="/checkout">Till kassan</Link>
+            <Button
+              onClick={() => navigate("/checkout")}
+              className="p-6 m-4 text-xl"
+            >
+              Till kassan
             </Button>
           </div>
         </section>

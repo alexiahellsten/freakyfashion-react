@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import { useBasket } from "../../contexts/BasketContext";
@@ -12,11 +13,11 @@ import "swiper/css/pagination";
 
 const API_URL = "http://localhost:8000";
 
-const ProductPage = ({ initialProduct }) => {
+const ProductPage = () => {
   const navigate = useNavigate();
   const { dispatch } = useBasket();
   const { slug } = useParams();
-  const [product, setProduct] = useState(null); // This will be the fetched product
+  const [product, setProduct] = useState(null);
   const [allProducts, setAllProducts] = useState([]);
   const [similarProducts, setSimilarProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -39,15 +40,11 @@ const ProductPage = ({ initialProduct }) => {
     async function fetchProduct() {
       setIsLoading(true);
       try {
-        console.log(`Fetching product with slug: ${slug}`);
         const response = await fetch(`${API_URL}/api/products/${slug}`);
         const data = await response.json();
-        console.log("Full product API response:", data);
 
         if (data && data.product) {
           setProduct(data.product);
-        } else {
-          console.error("Product not found:", data);
         }
       } catch (error) {
         console.error("Error fetching product:", error);
@@ -64,15 +61,11 @@ const ProductPage = ({ initialProduct }) => {
 
     async function fetchAllProducts() {
       try {
-        console.log("Fetching all products");
         const response = await fetch(`${API_URL}/api/products`);
         const data = await response.json();
-        console.log("Full products API response:", data);
 
         if (data && Array.isArray(data)) {
           setAllProducts(data);
-        } else {
-          console.error("No products found:", data);
         }
       } catch (error) {
         console.error("Error fetching all products:", error);
@@ -85,56 +78,51 @@ const ProductPage = ({ initialProduct }) => {
   useEffect(() => {
     if (!product || allProducts.length === 0) return;
 
-    console.log(`Finding similar products to: ${product.name}`);
-    console.log("Current product category:", product.category);
-
     const similar = allProducts.filter((p) => {
       if (p.slug === slug) return false;
-
       return (
         p.category &&
         p.category.toLowerCase() === product.category.toLowerCase()
       );
     });
 
-    console.log(`Found ${similar.length} similar products`);
-
     setSimilarProducts(
       similar.length > 0 ? similar.slice(0, 8) : allProducts.slice(0, 8)
     );
   }, [product, allProducts, slug]);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (!product) return <div>Product not found</div>;
-
-  const imageUrl = `/images/${product.image}`;
+  if (isLoading) return <div>Laddar...</div>;
+  if (!product) return <div>Hittade inte några produkter.</div>;
 
   return (
-    <div>
-      <div className="product-details flex flex-col w-full">
-        <article className="product-card chosen-product flex flex-col sm:flex-row p-2.5">
-          <div className="image-container w-full sm:w-1/2 lg:w-1/3">
-            <img src={imageUrl} alt={product.name} className="w-full" />
+    <div className="container mx-auto px-4 py-8">
+      <Card className="overflow-hidden">
+        <div className="flex flex-col md:flex-row">
+          <div className="md:w-1/2 lg:w-1/3 p-4">
+            <img
+              src={`/images/${product.image}`}
+              alt={product.name}
+              className="w-full h-auto object-contain"
+              loading="lazy"
+            />
           </div>
-          <div className="product-description-container flex flex-col justify-start w-full sm:w-1/2 lg:w-2/3 p-5 space-y-2">
-            <h2 className="text-2xl font-semibold">{product.name}</h2>
-            <p className="text-lg font-medium text-black">{product.brand}</p>
-            <p className="text-base text-black mt-2">{product.description}</p>
-            <p className="text-xl font-semibold text-gray-800 mt-4">
+          <CardContent className="md:w-1/2 lg:w-2/3 p-6 space-y-4">
+            <h2 className="text-3xl font-semibold">{product.name}</h2>
+            <p className="text-lg text-gray-600">{product.brand}</p>
+            <p className="text-base text-gray-700">{product.description}</p>
+            <p className="text-2xl font-bold text-gray-900">
               {product.price} SEK
             </p>
             <Button
-              asChild
-              className="w-full sm:w-1/3 md:w-1/3 lg:w-1/5 p-1 mt-2"
+              onClick={addToBasket}
+              className="w-full sm:w-2/3 md:w-1/2 lg:w-1/4 px-4 py-2 mt-2 text-base"
             >
-              {/* TODO: Fixa funktionalitet för Lägg till i varukorg-knappen */}
-              <button onClick={addToBasket}>Lägg till i varukorg</button>
+              Lägg till i varukorg
             </Button>
-          </div>
-        </article>
-      </div>
+          </CardContent>
+        </div>
+      </Card>
 
-      {/* TODO: Gör om detta till en enskild komponent */}
       {similarProducts.length > 0 && (
         <section className="min-w-full p-2.5 hidden sm:block">
           <div className="similar-products flex justify-center mb-3">
@@ -162,6 +150,7 @@ const ProductPage = ({ initialProduct }) => {
                     src={`/images/${p.image}`}
                     alt={p.name}
                     className="w-full max-h-[500px] object-cover rounded-lg"
+                    loading="lazy"
                   />
                   <div className="product-description-container w-full p-2 box-border">
                     <div className="product-description flex justify-between items-center mb-1 w-full">

@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import NavIcons from "./NavIcons";
 import SearchBar from "./SearchBar";
 
-function Navbar({ onSearch }) {
+function Navbar() {
   const logo = "/images/logo.png";
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
   const navigationLinks = [
     { id: 1, name: "Nyheter", url: "/nyheter" },
@@ -14,15 +15,17 @@ function Navbar({ onSearch }) {
     { id: 4, name: "Kampanjer", url: "/kampanjer" },
   ];
 
-  const handleSearch = (query) => {
-    setSearchQuery(query);
-    onSearch(query);
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search/${encodeURIComponent(searchQuery.trim())}`);
+    }
   };
 
   //Återställer tillståndet av searchQuery så att alla produkter visas igen
   const handleLogoClick = () => {
     setSearchQuery("");
-    onSearch("");
+    navigate("/");
   };
 
   return (
@@ -41,7 +44,11 @@ function Navbar({ onSearch }) {
         </div>
         <div className="flex items-center space-x-3 w-full">
           <div className="flex-1 sm:px-10">
-            <SearchBar onSearch={handleSearch} />
+            <SearchBar
+              onSearch={handleSearch}
+              value={searchQuery}
+              onChange={setSearchQuery}
+            />
           </div>
           <NavIcons />
         </div>

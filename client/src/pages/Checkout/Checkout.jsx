@@ -1,4 +1,33 @@
+// import { useBasket } from "../../contexts/BasketContext";
+// import { useNavigate } from "react-router";
+import Navbar from "../../components/Navbar/Navbar";
+import Footer from "../../components/Footer/Footer";
+import StoreInformation from "../../components/StoreInformation/StoreInformation";
+import BasketItems from "../../components/BasketItems/BasketItems";
+import CheckoutForm from "../../components/CheckoutForm/CheckoutForm";
+
 function Checkout() {
-  return <h1>Checkout</h1>;
+  return (
+    <>
+      <header>
+        <Navbar />
+      </header>
+      <main className="flex flex-col justify-center">
+        <section className="checkout w-full max-w-4xl mx-auto px-4">
+          <div className="flex justify-center">
+            <h2 className="text-2xl font-semibold text-center my-4">Kassa</h2>
+          </div>
+
+          <div>
+            <BasketItems />
+            <CheckoutForm />
+          </div>
+          <StoreInformation />
+        </section>
+      </main>
+      <Footer />
+    </>
+  );
 }
+
 export default Checkout;
