@@ -1,4 +1,3 @@
-import { Link } from "react-router";
 import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,7 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-function ProductTable({ products }) {
+function ProductTable({ products, onDelete }) {
   return (
     <div className="overflow-hidden rounded-md border">
       <Table className="w-full text-left">
@@ -50,14 +49,14 @@ function ProductTable({ products }) {
                   {product.price} SEK
                 </TableCell>
                 <TableCell className="border-b px-3 py-2 text-center">
-                  <Link to="/delete">
-                    <Button
-                      variant="destructive"
-                      className="bg-red-200 text-foreground hover:bg-red-300"
-                    >
-                      <Trash2 className="icon" />
-                    </Button>
-                  </Link>
+                  <Button
+                    variant="destructive"
+                    className="bg-red-300 text-foreground hover:bg-red-400"
+                    size="icon"
+                    onClick={() => onDelete(product.slug)}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
                 </TableCell>
               </TableRow>
             ))
