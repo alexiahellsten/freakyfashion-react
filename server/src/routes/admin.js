@@ -8,12 +8,23 @@ const router = express.Router();
 router.get("/", (req, res, next) => {
   try {
     const sql = `
-       SELECT id, sku, name, price, brand, description, image, slug,
-      registrationDate, isNew, isFavourite, category
+       SELECT 
+       id,
+       sku,
+       name,
+       price,
+       brand,
+       description,
+       image,
+       slug,
+      registrationDate,
+      isNew,
+      isFavourite,
+      category
       FROM products
     `;
     const rows = db.prepare(sql).all();
-    res.json({ products: rows }); // Return JSON instead of rendering
+    res.json({ products: rows });
   } catch (error) {
     next(error);
   }
@@ -23,24 +34,34 @@ router.get("/", (req, res, next) => {
 router.get("/products", (req, res, next) => {
   try {
     const sql = `
-     SELECT id, sku, name, price, brand, description, image, slug,
-      registrationDate, isNew, isFavourite, category
+     SELECT id,
+     sku,
+     name, 
+     price,
+     brand,
+     description,
+     image,
+     slug,
+     registrationDate,
+     isNew,
+     isFavourite,
+     category
       FROM products
     `;
     const rows = db.prepare(sql).all();
-    res.json({ products: rows }); // Return JSON instead of rendering
+    res.json({ products: rows });
   } catch (error) {
     next(error);
   }
 });
 
-// POST /admin/products/new (Create new product)
+// POST /admin/products/new
 router.post("/products/new", (req, res) => {
   try {
     const slug = generateSlug(req.body.name);
-    const registrationDate = new Date(req.body.registrationDate).toISOString().split('T')[0];
+    const registrationDate = new Date().toISOString().split('T')[0];
     const currentDate = new Date();
-    const isNew = (currentDate - new Date(registrationDate)) / (1000 * 60 * 60 * 24) <= 7 ? 1 : 0;
+    const isNew = 1; 
 
     const product = {
       sku: String(req.body.sku),
@@ -57,17 +78,40 @@ router.post("/products/new", (req, res) => {
     };
 
     const sql = `
-      INSERT INTO products (sku, name, price, brand, description, image, slug, registrationDate, isNew, isFavourite)
-      VALUES (@sku, @name, @price, @brand, @description, @image, @slug, @registrationDate, @isNew, @isFavourite, @category);
+      INSERT INTO products (
+      sku,
+      name,
+      price,
+      brand,
+      description,
+      image,
+      slug,
+      registrationDate,
+      isNew,
+      isFavourite,
+      category
+      )
+      VALUES (
+      @sku,
+      @name,
+      @price,
+      @brand,
+      @description,
+      @image,
+      @slug,
+      @registrationDate,
+      @isNew,
+      @isFavourite, 
+      @category);
     `;
     db.prepare(sql).run(product);
 
-    console.log("New product registered:", product);
-    res.status(201).json({ message: "Product added", product });
+    console.log("Ny produkt registrerad:", product);
+    res.status(201).json({ message: "Produkt tillagd", product });
 
   } catch (error) {
-    console.error("Error adding product:", error.message);
-    res.status(500).json({ error: "Failed to add product" });
+    console.error("Fel vid registrering av produkt:", error.message);
+    res.status(500).json({ error: "Kunde inte lägga till produkten" });
   }
 });
 
@@ -76,31 +120,39 @@ router.delete("/products/:slug", (req, res) => {
   try {
     const sql = `DELETE FROM products WHERE slug = ?`;
     db.prepare(sql).run(req.params.slug);
-    res.status(200).json({ message: "Product deleted" });
+    res.status(200).json({ message: "Produkt raderad" });
   } catch (error) {
-    console.error("Error deleting product:", error);
-    res.status(500).json({ error: "Failed to delete product" });
+    console.error("Fel vid radering av produkt:", error);
+    res.status(500).json({ error: "Kunde inte radera produkten" });
   }
 });
 
-// PUT /admin/products/:slug (Update product)
-router.put("/products/:slug", (req, res) => {
-  try {
-    const { sku, name, price, brand, description, image, registrationDate, isFavourite } = req.body;
-    const isNew = (new Date() - new Date(registrationDate)) / (1000 * 60 * 60 * 24) <= 7 ? 1 : 0;
+// PUT /admin/products/:slug
+// router.put("/products/:slug", (req, res) => {
+//   try {
+//     const { sku, name, price, brand, description, image, registrationDate, isFavourite } = req.body;
+//     const isNew = (new Date() - new Date(registrationDate)) / (1000 * 60 * 60 * 24) <= 7 ? 1 : 0;
 
-    const sql = `
-      UPDATE products
-      SET sku = ?, name = ?, price = ?, brand = ?, description = ?, image = ?, registrationDate = ?, isFavourite = ?, isNew = ?
-      WHERE slug = ?;
-    `;
-    db.prepare(sql).run(sku, name, price, brand, description, image, registrationDate, isFavourite, isNew, req.params.slug);
+//     const sql = `
+//       UPDATE products
+//       SET sku = ?,
+//        name = ?,
+//        price = ?,
+//        brand = ?,
+//        description = ?,
+//        image = ?,
+//        registrationDate = ?,
+//        isFavourite = ?,
+//        isNew = ?
+//       WHERE slug = ?;
+//     `;
+//     db.prepare(sql).run(sku, name, price, brand, description, image, registrationDate, isFavourite, isNew, req.params.slug);
     
-    res.json({ message: "Product updated" });
-  } catch (error) {
-    console.error("Error updating product:", error);
-    res.status(500).json({ error: "Failed to update product" });
-  }
-});
+//     res.json({ message: "Produkten uppdaterades" });
+//   } catch (error) {
+//     console.error("Fel vid uppdatering av produkt:", error);
+//     res.status(500).json({ error: "Kunde inte uppdatera produkten" });
+//   }
+// });
 
 export default router;

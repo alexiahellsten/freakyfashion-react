@@ -19,25 +19,12 @@ import {
 } from "@/components/ui/table";
 
 function Basket() {
-  //filteredProducts: En lista som lagrar produkterna som matchar sökningen.
-  //searchQuery: En sträng som innehåller den aktuella sökfrågan.
-
   const navigate = useNavigate();
-
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-
-  //useBasket() hämtar den globala varukorgens tillstånd (state) och dispatch-funktionen
-  // från BasketContext.
-  //basket extraheras från state och innehåller alla produkter i varukorgen
   const { state, dispatch } = useBasket();
   const { basket } = state;
 
-  //Uppdaterar searchQuery med den nya söksträngen.
-  //Om en sökning (query) skrivs in:
-  //Filtrerar basket baserat på produktens namn eller varumärke (brand).
-  //Uppdaterar filteredProducts med de matchande produkterna.
-  //Om sökfältet är tomt (""), återställs filteredProducts till hela varukorgen.
   const handleSearch = (query) => {
     setSearchQuery(query);
     if (query) {
@@ -52,15 +39,10 @@ function Basket() {
     }
   };
 
-  // useEffect körs varje gång basket uppdateras.
-  // Säkerställer att den filtrerade listan (filteredProducts) uppdateras när produkter
-  // läggs till eller tas bort.
   useEffect(() => {
     setFilteredProducts(basket);
   }, [basket]);
 
-  // Skickar en dispatch-åtgärd (REMOVE_ITEM) till basketReducer för att ta bort en produkt.
-  // Produkten tas bort baserat på dess UUID.
   const removeItemFromBasket = (uuid) => {
     dispatch({
       type: "REMOVE_ITEM",
@@ -68,9 +50,6 @@ function Basket() {
     });
   };
 
-  // Skickar en dispatch-åtgärd (UPDATE_ITEM) till basketReducer för
-  //  att ändra kvantiteten av en produkt.
-  // Produkten identifieras via UUID, och kvantiteten uppdateras med quantity.
   const updateItemQuantity = (uuid, quantity) => {
     dispatch({
       type: "UPDATE_ITEM",
@@ -93,7 +72,6 @@ function Basket() {
           </div>
         )}
 
-        {/* Visar enbart ProductGrid om användaren har sökt på något */}
         {searchQuery && <ProductGrid products={filteredProducts} />}
 
         <section className="checkout w-full max-w-4xl mx-auto px-4">
@@ -101,8 +79,8 @@ function Basket() {
             <h2 className="text-2xl font-medium">Varukorg</h2>
           </div>
 
-          <div className="my-4">
-            <Table className="hidden sm:table w-full">
+          <div className="my-4 w-full overflow-x-auto">
+            <Table className="hidden sm:table w-full table-auto">
               <TableHeader>
                 <TableRow className="bg-gray-100">
                   <TableHead className="text-black font-semibold border border-1 px-3 py-2">
@@ -149,10 +127,10 @@ function Basket() {
                           <Input
                             type="number"
                             value={item.quantity}
-                            onChange={(e) =>
+                            onChange={(event) =>
                               updateItemQuantity(
                                 item.uuid,
-                                parseInt(e.target.value, 10)
+                                parseInt(event.target.value, 10)
                               )
                             }
                             className="border p-1 w-12 text-center"
@@ -205,10 +183,10 @@ function Basket() {
                       <Input
                         type="number"
                         value={item.quantity}
-                        onChange={(e) =>
+                        onChange={(event) =>
                           updateItemQuantity(
                             item.uuid,
-                            parseInt(e.target.value, 10)
+                            parseInt(event.target.value, 10)
                           )
                         }
                         className="border p-1 w-12 text-center"
@@ -231,7 +209,7 @@ function Basket() {
           <div className="flex justify-center m-5">
             <Button
               onClick={() => navigate("/checkout")}
-              className="p-4 m-2 text-base"
+              className="p-4 m-2 w-1/4 text-lg sm:text-base sm:w-1/4 lg:1/3"
             >
               Till kassan
             </Button>

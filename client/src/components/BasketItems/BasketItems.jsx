@@ -68,15 +68,14 @@ function BasketItems() {
                   {item.quantity * item.price} SEK
                 </TableCell>
                 <TableCell className="border-b border-r text-center px-3 py-2">
-                  {/* Wrap input and button inside a flex container */}
                   <div className="flex items-center justify-center space-x-2">
                     <Input
                       type="number"
                       value={item.quantity}
-                      onChange={(e) =>
+                      onChange={(event) =>
                         updateItemQuantity(
                           item.uuid,
-                          parseInt(e.target.value, 10)
+                          parseInt(event.target.value, 10)
                         )
                       }
                       className="border p-1 w-12 text-center"
@@ -120,13 +119,15 @@ function BasketItems() {
                 </span>
               </div>
               <span className="text-gray-500 text-sm">{item.price} SEK</span>
-              {/* Input and delete button */}
               <div className="flex items-center justify-end mt-2 space-x-2">
                 <Input
                   type="number"
                   value={item.quantity}
-                  onChange={(e) =>
-                    updateItemQuantity(item.uuid, parseInt(e.target.value, 10))
+                  onChange={(event) =>
+                    updateItemQuantity(
+                      item.uuid,
+                      parseInt(event.target.value, 10)
+                    )
                   }
                   className="border p-1 w-12 text-center"
                   min="1"

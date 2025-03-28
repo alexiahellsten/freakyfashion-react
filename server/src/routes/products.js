@@ -2,8 +2,6 @@ import express from "express";
 const router = express.Router();
 import db from "../../db/db.js";
 
-// TODO: Lägg till category
-
 // GET /api/products + api/products?q=
 router.get("/", function (req, res, next) {
   const searchQuery = req.query.q; 
@@ -19,8 +17,11 @@ router.get("/", function (req, res, next) {
            slug,
            registrationDate,
            isNew,
-           isFavourite
+           isFavourite, 
+           category
     FROM products
+    ORDER BY RANDOM()
+    LIMIT 8
   `;
 
   let params = [];
@@ -52,7 +53,8 @@ router.get("/:slug", function (req, res, next) {
            slug,
            registrationDate,
            isNew,
-           isFavourite
+           isFavourite,
+           category
     FROM products
     WHERE slug = ?
   `;
@@ -67,7 +69,8 @@ router.get("/:slug", function (req, res, next) {
            slug,
            registrationDate,
            isNew,
-           isFavourite
+           isFavourite,
+           category
     FROM products
     WHERE slug != ?
     ORDER BY RANDOM()
@@ -79,7 +82,7 @@ router.get("/:slug", function (req, res, next) {
     const rows = db.prepare(slideshowProducts).all(slug);
 
     if (!row) {
-      return res.status(404).send("Product not found");
+      return res.status(404).send("Kunde inte hitta produkten");
     }
 
     res.json({

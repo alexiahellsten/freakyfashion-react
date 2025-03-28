@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
+
 import Header from "../../components/Admin/Header";
 import ProductTable from "../../components/Admin/ProductTable";
 import { Button } from "@/components/ui/button";
@@ -40,7 +41,15 @@ function Admin() {
     fetchProducts();
   }, []);
 
-  const handleDelete = async (slug) => {
+  const handleDelete = async (slug, productName) => {
+    if (
+      !window.confirm(
+        `Är du säker på att du vill radera produkten: ${productName}?`
+      )
+    ) {
+      return;
+    }
+
     try {
       const response = await fetch(`${API_URL}/admin/products/${slug}`, {
         method: "DELETE",
@@ -49,7 +58,6 @@ function Admin() {
       if (!response.ok) {
         throw new Error("Kunde inte radera produkten");
       }
-
       fetchProducts();
     } catch (error) {
       console.error("Fel vid radering av produkt:", error);
@@ -57,7 +65,6 @@ function Admin() {
     }
   };
 
-  //Filtrerar produkter efter kategori och returnerar de produkter som matchar filtret
   const filteredProducts = products.filter((product) => {
     if (filter === "all") return true;
     return product.category === filter;
@@ -67,13 +74,15 @@ function Admin() {
     <>
       <Header />
       <div className="flex flex-col lg:flex-row lg:justify-start lg:items-start lg:gap-12">
-        <aside className="invisible md:visible text-black bg-gray-200 border w-full lg:w-48 sm:h-screen flex justify-center p-4">
-          <h3 className="text-lg">Produkter</h3>
+        <aside className="invisible sm:visible text-black bg-gray-200 border w-full lg:w-48 sm:h-screen flex justify-center p-4">
+          <h3 className="text-lg font-semibold">Produkter</h3>
         </aside>
 
         <section className="w-full lg:w-3/4 p-4 bg-white">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold">Produkter</h2>
+            <h2 className="text-center sm:text-left text-xl font-semibold mb-4 mt-4">
+              Produkter
+            </h2>
 
             <div className="flex gap-2">
               <Button onClick={() => navigate("/admin/products/new")}>

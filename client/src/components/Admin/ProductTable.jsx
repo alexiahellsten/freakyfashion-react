@@ -53,7 +53,7 @@ function ProductTable({ products, onDelete }) {
                     variant="destructive"
                     className="bg-red-300 text-foreground hover:bg-red-400"
                     size="icon"
-                    onClick={() => onDelete(product.slug)}
+                    onClick={() => onDelete(product.slug, product.name)}
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
