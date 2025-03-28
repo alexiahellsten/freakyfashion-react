@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import Navbar from "../../components/Navbar/Navbar";
 import ProductGrid from "../../components/ProductGrid/ProductGrid";
 import Footer from "../../components/Footer/Footer";
+import CallToAction from "../../components/CallToAction/CallToAction";
 
 const API_URL = "http://localhost:8000";
 
@@ -36,6 +37,7 @@ function Search() {
   return (
     <>
       <header>
+        <CallToAction />
         <Navbar />
       </header>
       <main className="container mx-auto px-4 py-8">

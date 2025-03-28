@@ -4,6 +4,7 @@ import { useBasket } from "../../contexts/BasketContext"; // Import the custom h
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import StoreInformation from "../../components/StoreInformation/StoreInformation";
+import CallToAction from "../../components/CallToAction/CallToAction";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -60,6 +61,7 @@ function Basket() {
   return (
     <>
       <header>
+        <CallToAction />
         <Navbar onSearch={handleSearch} />
       </header>
       <main className="flex flex-col justify-center">

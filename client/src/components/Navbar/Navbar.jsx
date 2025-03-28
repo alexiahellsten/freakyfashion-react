@@ -15,14 +15,13 @@ function Navbar() {
     { id: 4, name: "Kampanjer", url: "/kampanjer" },
   ];
 
-  const handleSearch = (e) => {
-    e.preventDefault();
+  const handleSearch = (event) => {
+    event.preventDefault();
     if (searchQuery.trim()) {
       navigate(`/search/${encodeURIComponent(searchQuery.trim())}`);
     }
   };
 
-  //Återställer tillståndet av searchQuery så att alla produkter visas igen
   const handleLogoClick = () => {
     setSearchQuery("");
     navigate("/");

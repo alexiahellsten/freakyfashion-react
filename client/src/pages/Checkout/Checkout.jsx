@@ -3,11 +3,13 @@ import Footer from "../../components/Footer/Footer";
 import StoreInformation from "../../components/StoreInformation/StoreInformation";
 import BasketItems from "../../components/BasketItems/BasketItems";
 import CheckoutForm from "../../components/CheckoutForm/CheckoutForm";
+import CallToAction from "../../components/CallToAction/CallToAction";
 
 function Checkout() {
   return (
     <>
       <header>
+        <CallToAction />
         <Navbar />
       </header>
       <main className="flex flex-col justify-center">
