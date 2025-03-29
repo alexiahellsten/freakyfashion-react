@@ -16,6 +16,7 @@ router.get("/", function (req, res, next) {
            image,
            slug,
            registrationDate,
+           publicationDate,
            isNew,
            isFavourite, 
            category
@@ -52,6 +53,7 @@ router.get("/:slug", function (req, res, next) {
            image,
            slug,
            registrationDate,
+           publicationDate,
            isNew,
            isFavourite,
            category
@@ -68,6 +70,7 @@ router.get("/:slug", function (req, res, next) {
            image,
            slug,
            registrationDate,
+           publicationDate,
            isNew,
            isFavourite,
            category

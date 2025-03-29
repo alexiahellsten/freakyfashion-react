@@ -18,6 +18,7 @@ router.get("/", (req, res, next) => {
        image,
        slug,
       registrationDate,
+      publicationDate,
       isNew,
       isFavourite,
       category
@@ -43,6 +44,7 @@ router.get("/products", (req, res, next) => {
      image,
      slug,
      registrationDate,
+     publicationDate,
      isNew,
      isFavourite,
      category
@@ -59,9 +61,9 @@ router.get("/products", (req, res, next) => {
 router.post("/products/new", (req, res) => {
   try {
     const slug = generateSlug(req.body.name);
-    const registrationDate = new Date().toISOString().split('T')[0];
-    const currentDate = new Date();
-    const isNew = 1; 
+    const registrationDate = new Date().toISOString().split('T')[0]; 
+    const publicationDate = req.body.publicationDate || registrationDate;
+    const isNew = 1;
 
     const product = {
       sku: String(req.body.sku),
@@ -72,6 +74,7 @@ router.post("/products/new", (req, res) => {
       image: String(req.body.image),
       slug: String(slug),
       registrationDate: String(registrationDate),
+      publicationDate: String(publicationDate), 
       isNew: Number(isNew),
       isFavourite: 0,
       category: String(req.body.category)
@@ -79,30 +82,13 @@ router.post("/products/new", (req, res) => {
 
     const sql = `
       INSERT INTO products (
-      sku,
-      name,
-      price,
-      brand,
-      description,
-      image,
-      slug,
-      registrationDate,
-      isNew,
-      isFavourite,
-      category
+        sku, name, price, brand, description, image, slug, 
+        registrationDate, publicationDate, isNew, isFavourite, category
       )
       VALUES (
-      @sku,
-      @name,
-      @price,
-      @brand,
-      @description,
-      @image,
-      @slug,
-      @registrationDate,
-      @isNew,
-      @isFavourite, 
-      @category);
+        @sku, @name, @price, @brand, @description, @image, @slug, 
+        @registrationDate, @publicationDate, @isNew, @isFavourite, @category
+      );
     `;
     db.prepare(sql).run(product);
 
@@ -115,6 +101,7 @@ router.post("/products/new", (req, res) => {
   }
 });
 
+
 // DELETE /admin/products/:slug
 router.delete("/products/:slug", (req, res) => {
   try {
@@ -126,33 +113,5 @@ router.delete("/products/:slug", (req, res) => {
     res.status(500).json({ error: "Kunde inte radera produkten" });
   }
 });
-
-// PUT /admin/products/:slug
-// router.put("/products/:slug", (req, res) => {
-//   try {
-//     const { sku, name, price, brand, description, image, registrationDate, isFavourite } = req.body;
-//     const isNew = (new Date() - new Date(registrationDate)) / (1000 * 60 * 60 * 24) <= 7 ? 1 : 0;
-
-//     const sql = `
-//       UPDATE products
-//       SET sku = ?,
-//        name = ?,
-//        price = ?,
-//        brand = ?,
-//        description = ?,
-//        image = ?,
-//        registrationDate = ?,
-//        isFavourite = ?,
-//        isNew = ?
-//       WHERE slug = ?;
-//     `;
-//     db.prepare(sql).run(sku, name, price, brand, description, image, registrationDate, isFavourite, isNew, req.params.slug);
-    
-//     res.json({ message: "Produkten uppdaterades" });
-//   } catch (error) {
-//     console.error("Fel vid uppdatering av produkt:", error);
-//     res.status(500).json({ error: "Kunde inte uppdatera produkten" });
-//   }
-// });
 
 export default router;

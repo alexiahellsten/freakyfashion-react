@@ -21,7 +21,7 @@ function Spots() {
   };
 
   return (
-    <div className="p-4 spots-container mx-2.5 w-full justify-center items-center">
+    <div className="hidden lg:block p-4 spots-container mx-2.5 w-full justify-center items-center">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {spotData.map((spot) => (
           <div
