@@ -2,7 +2,7 @@ import { Heart } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/Card";
 
 function ProductGrid({ products }) {
-  if (!products) {
+  if (!products || products.length === 0) {
     return <p>Produkter inte tillgängliga.</p>;
   }
 

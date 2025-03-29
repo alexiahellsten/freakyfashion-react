@@ -24,7 +24,6 @@ function Home() {
               säkerställer vi att alla som är involverade i processen får
               rättvis ersättning och arbetar under etiska förhållanden.`;
   const heroImage = "/images/vit-blus.jpg";
-
   useEffect(() => {
     fetch(`${API_URL}/api/products`)
       .then((response) => response.json())
@@ -41,7 +40,7 @@ function Home() {
         setProducts(filtered);
         setFilteredProducts(filtered);
       })
-      .catch((error) => console.error("Error fetching products:", error));
+      .catch((error) => console.error("Fel vid hämtning av produkter:", error));
   }, []);
 
   const handleSearch = (query) => {
