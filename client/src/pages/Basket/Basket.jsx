@@ -20,6 +20,10 @@ import {
 } from "@/components/ui/table";
 
 function Basket() {
+  useEffect(() => {
+    document.title = "Varukorgen";
+  }, []);
+
   const navigate = useNavigate();
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");

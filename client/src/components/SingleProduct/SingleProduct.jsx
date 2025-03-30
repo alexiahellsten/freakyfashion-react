@@ -13,11 +13,11 @@ import "swiper/css/pagination";
 
 const API_URL = "http://localhost:8000";
 
-const ProductPage = () => {
+const ProductPage = ({ setProduct }) => {
   const navigate = useNavigate();
   const { dispatch } = useBasket();
   const { slug } = useParams();
-  const [product, setProduct] = useState(null);
+  const [product, setLocalProduct] = useState(null);
   const [allProducts, setAllProducts] = useState([]);
   const [similarProducts, setSimilarProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -44,6 +44,7 @@ const ProductPage = () => {
         const data = await response.json();
 
         if (data && data.product) {
+          setLocalProduct(data.product);
           setProduct(data.product);
         }
       } catch (error) {
@@ -54,7 +55,7 @@ const ProductPage = () => {
     }
 
     fetchProduct();
-  }, [slug]);
+  }, [slug, setProduct]);
 
   useEffect(() => {
     if (!product) return;
@@ -123,6 +124,7 @@ const ProductPage = () => {
         </div>
       </Card>
 
+      {/* Swiper Slideshow för Liknande produkter */}
       {similarProducts.length > 0 && (
         <section className="min-w-full p-2.5 hidden sm:block">
           <div className="similar-products flex justify-center mb-3">
@@ -141,7 +143,7 @@ const ProductPage = () => {
             className="swiper mySwiper sm:w-3/4 lg:w-3/4 relative"
           >
             {similarProducts.map((p) => (
-              <SwiperSlide key={uuidv4()}>
+              <SwiperSlide key={p.id || uuidv4()}>
                 <Link
                   to={`/products/${p.slug}`}
                   className="flex flex-col items-center"

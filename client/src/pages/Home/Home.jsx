@@ -25,6 +25,8 @@ function Home() {
               rättvis ersättning och arbetar under etiska förhållanden.`;
   const heroImage = "/images/vit-blus.jpg";
   useEffect(() => {
+    document.title = "Freaky Fashion";
+
     fetch(`${API_URL}/api/products`)
       .then((response) => response.json())
       .then((data) => {

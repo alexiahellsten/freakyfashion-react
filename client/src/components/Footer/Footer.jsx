@@ -5,7 +5,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-// TODO: Ersätt med faktiska länkar
 function Footer() {
   return (
     <footer className="text-center bg-purple-200 p-6 mt-10">

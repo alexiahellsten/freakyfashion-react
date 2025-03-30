@@ -18,6 +18,10 @@ import {
 const API_URL = "http://localhost:8000";
 
 function Admin() {
+  useEffect(() => {
+    document.title = "Administration";
+  }, []);
+
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");

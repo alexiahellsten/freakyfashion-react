@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import StoreInformation from "../../components/StoreInformation/StoreInformation";
@@ -6,6 +7,10 @@ import CheckoutForm from "../../components/CheckoutForm/CheckoutForm";
 import CallToAction from "../../components/CallToAction/CallToAction";
 
 function Checkout() {
+  useEffect(() => {
+    document.title = "Kassan";
+  }, []);
+
   return (
     <>
       <header>

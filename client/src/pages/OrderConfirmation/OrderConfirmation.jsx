@@ -1,13 +1,17 @@
+import { useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
-
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import StoreInformation from "../../components/StoreInformation/StoreInformation";
 import CallToAction from "../../components/CallToAction/CallToAction";
 
 function OrderConfirmation() {
+  useEffect(() => {
+    document.title = "Orderkonfirmation";
+  }, []);
+
   return (
     <>
       <header>

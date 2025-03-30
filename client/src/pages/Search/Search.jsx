@@ -14,6 +14,8 @@ function Search() {
   const [filteredProducts, setFilteredProducts] = useState([]);
 
   useEffect(() => {
+    document.title = "Freaky Fashion";
+
     fetch(`${API_URL}/api/products`)
       .then((response) => response.json())
       .then((data) => {

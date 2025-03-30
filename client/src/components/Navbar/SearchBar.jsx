@@ -10,7 +10,7 @@ function SearchBar({ onSearch, value, onChange }) {
           type="text"
           placeholder="Sök produkt"
           value={value}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(event) => onChange(event.target.value)}
           className="pl-10 border-purple-200 border-2 focus:bg-purple-100"
         />
       </form>
