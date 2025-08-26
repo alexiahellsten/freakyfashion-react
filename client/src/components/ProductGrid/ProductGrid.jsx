@@ -23,7 +23,7 @@ function ProductGrid({ products }) {
                 />
               </div>
 
-              {product.isNew === 1 && (
+              {product.showNewBadge && (
                 <div className="text-block absolute top-[5px] left-3">
                   <p className="absolute top-2.5 left-0.5 p-2 text-white bg-black rounded-[10px]">
                     Nyhet

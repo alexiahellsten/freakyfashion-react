@@ -9,6 +9,8 @@ import Search from "./pages/Search/Search";
 import Admin from "./pages/Admin/Admin";
 // import AdminProducts from "./pages/Admin/Products";
 import NewProduct from "./pages/Admin/NewProduct";
+import Favorites from "./pages/Favorites/Favorites";
+import New from "./pages/New/New";
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
       <Route path="/" element={<Home />} />
       {/* <Route path="/products" element={<Products />} /> */}
       <Route path="/products/:slug" element={<ProductDetails />} />
+      <Route path="/favorites" element={<Favorites />} />
+      <Route path="/new" element={<New />} />
       <Route path="/basket" element={<Basket />} />
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/order-confirmation" element={<OrderConfirmation />} />

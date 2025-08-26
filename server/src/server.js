@@ -8,6 +8,7 @@ import searchRouter from "./routes/search.js";
 import adminRouter from "./routes/admin.js";
 import favoritesRouter from "./routes/favorites.js";
 import loginRouter from "./routes/login.js";
+import newProductsRouter from "./routes/new-products.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -24,6 +25,7 @@ app.use("/api/search", searchRouter);
 app.use("/admin", adminRouter);
 app.use("api/favorites", favoritesRouter);
 app.use("/api/login", loginRouter);
+app.use("/api/new", newProductsRouter);
 
 app.get("/", (req, res) => {
   res.send("Välkommen till Freaky Fashions API! Tillgängliga sökvägar: /api/products, /api/search, /admin, /favorites");
