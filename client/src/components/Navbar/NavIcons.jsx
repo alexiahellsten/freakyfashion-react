@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Heart, ShoppingCart } from "lucide-react";
+import { Heart, ShoppingCart, LogIn } from "lucide-react";
 import { Link } from "react-router";
 import { useBasket } from "../../contexts/BasketContext";
 
@@ -24,6 +24,11 @@ function NavIcons() {
             {basketItemsCount}
           </span>
         )}
+      </Link>
+      <Link to="/login" className="relative">
+        <Button variant="ghost" size="icon" className="text-foreground">
+          <LogIn />
+        </Button>
       </Link>
     </div>
   );
