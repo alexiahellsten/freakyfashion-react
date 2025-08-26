@@ -10,9 +10,11 @@ function NavIcons() {
 
   return (
     <div className="flex items-center relative space-x-2">
+       <Link to="/favorites" className="relative">
       <Button variant="ghost" size="icon" className="text-foreground">
         <Heart fill="currentColor" />
       </Button>
+      </Link>
       <Link to="/basket" className="relative">
         <Button variant="ghost" size="icon" className="text-foreground">
           <ShoppingCart />

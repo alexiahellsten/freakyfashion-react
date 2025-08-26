@@ -9,7 +9,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        display: ["'DM Sans'", "sans-serif"], // Ensure correct quotes
+        display: ["'DM Sans'", "sans-serif"], 
       },
     },
   },
