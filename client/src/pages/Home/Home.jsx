@@ -24,6 +24,7 @@ function Home() {
               säkerställer vi att alla som är involverade i processen får
               rättvis ersättning och arbetar under etiska förhållanden.`;
   const heroImage = "/images/vit-blus.jpg";
+  
   useEffect(() => {
     document.title = "Freaky Fashion";
 
@@ -32,12 +33,30 @@ function Home() {
       .then((data) => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
+        
+        //Kalkylera datumet för sju dagar sedan
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(today.getDate() - 7);
+        sevenDaysAgo.setHours(0, 0, 0, 0);
 
-        const filtered = data.filter((product) => {
-          const publicationDate = new Date(product.publicationDate);
-          publicationDate.setHours(0, 0, 0, 0);
-          return publicationDate <= today;
-        });
+        const filtered = data
+          .filter((product) => {
+            const publicationDate = new Date(product.publicationDate);
+            publicationDate.setHours(0, 0, 0, 0);
+            return publicationDate <= today;
+          })
+          .map((product) => {
+            // Kontrollera om produkten är ny baserat på värdet på isNew och publiceringsdatum, isåfall visas "Nyhet"-badgen
+            const publicationDate = new Date(product.publicationDate);
+            publicationDate.setHours(0, 0, 0, 0);
+            
+            // En produkt är "ny" om isNew är 1 och publiceringsdatumet är inom de senaste sju dagarna
+            const isActuallyNew = product.isNew === 1 && publicationDate >= sevenDaysAgo && publicationDate <= today;
+            return {
+              ...product,
+              showNewBadge: isActuallyNew
+            };
+          });
 
         setProducts(filtered);
         setFilteredProducts(filtered);
