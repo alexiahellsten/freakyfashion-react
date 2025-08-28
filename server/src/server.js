@@ -28,7 +28,7 @@ app.use("/api/login", loginRouter);
 app.use("/api/new", newProductsRouter);
 
 app.get("/", (req, res) => {
-  res.send("Välkommen till Freaky Fashions API! Tillgängliga sökvägar: /api/products, /api/search, /admin, /favorites");
+  res.send("Välkommen till Freaky Fashions API! Tillgängliga sökvägar: /api/products, /api/search, /admin, /favorites, /new");
 });
 
 app.use((err, req, res, next) => {
