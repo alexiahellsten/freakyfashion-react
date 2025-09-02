@@ -15,7 +15,7 @@ function CheckoutForm() {
 
     dispatch({ type: "CLEAR_BASKET" });
 
-    navigate("/order-confirmation");
+    navigate("/order/confirmation");
   };
 
   return (

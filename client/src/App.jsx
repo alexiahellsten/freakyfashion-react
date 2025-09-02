@@ -11,6 +11,7 @@ import Admin from "./pages/Admin/Admin";
 import NewProduct from "./pages/Admin/NewProduct";
 import Favorites from "./pages/Favorites/Favorites";
 import New from "./pages/New/New";
+import Login from "./pages/Login/Login";
 
 function App() {
   return (
@@ -22,11 +23,12 @@ function App() {
       <Route path="/new" element={<New />} />
       <Route path="/basket" element={<Basket />} />
       <Route path="/checkout" element={<Checkout />} />
-      <Route path="/order-confirmation" element={<OrderConfirmation />} />
+      <Route path="/order/confirmation" element={<OrderConfirmation />} />
       <Route path="/search/:slug" element={<Search />} />
       <Route path="/admin" element={<Admin />} />
       {/* <Route path="/admin/products" element={<AdminProducts />} /> */}
       <Route path="/admin/products/new" element={<NewProduct />} />
+      <Route path="/login" element={<Login />} />
     </Routes>
   );
 }
