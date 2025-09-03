@@ -1,4 +1,6 @@
+import "dotenv/config";
 import express from "express";
+import session from "express-session";
 import cors from "cors";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path"; 
@@ -14,6 +16,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const port = 8000;
+const sessionSecret = process.env.SESSION_SECRET
 
 const app = express();
 app.use(cors());
@@ -23,9 +26,22 @@ app.use(express.static(join(__dirname, 'public')));
 app.use("/api/products", productsRouter);
 app.use("/api/search", searchRouter);
 app.use("/admin", adminRouter);
-app.use("api/favorites", favoritesRouter);
+app.use("/api/favorites", favoritesRouter);
 app.use("/api/login", loginRouter);
 app.use("/api/new", newProductsRouter);
+
+app.use(
+  session({
+    secret: sessionSecret, 
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      secure: process.env.NODE_ENV,
+      maxAge: 1000 * 60 * 60, // Sätter cookie till maxlängd 1 timme
+    },
+  })
+);
 
 app.get("/", (req, res) => {
   res.send("Välkommen till Freaky Fashions API! Tillgängliga sökvägar: /api/products, /api/search, /admin, /favorites, /new");
