@@ -4,36 +4,35 @@ import db from "../../db/db.js";
 
 // GET /api/products + api/products?q=
 router.get("/", function (req, res, next) {
-  const searchQuery = req.query.q; 
+  const searchQuery = req.query.q;
 
-  let sql = `
-    SELECT id,
-           sku,
-           name,
-           price,
-           brand,
-           description,
-           image,
-           slug,
-           registrationDate,
-           publicationDate,
-           isNew,
-           isFavourite, 
-           category
-    FROM products
-    ORDER BY RANDOM()
-    LIMIT 8
+  let products = `
+    SELECT product.id,
+           product.sku,
+           product.name,
+           product.price,
+           product.brand,
+           product.description,
+           product.image,
+           product.slug,
+           product.registrationDate,
+           product.publicationDate,
+           product.isNew,
+           product.isFavourite,
+           category.name AS category
+    FROM products product
+    LEFT JOIN categories category ON category.id = product.category_id
   `;
 
   let params = [];
 
   if (searchQuery) {
-    sql += " WHERE name LIKE ? OR description LIKE ?";
+    products += " WHERE product.name LIKE ? OR product.description LIKE ?";
     params = [`%${searchQuery}%`, `%${searchQuery}%`];
   }
 
   try {
-    const rows = db.prepare(sql).all(...params);
+    const rows = db.prepare(products).all(...params);
     res.json(rows);
   } catch (error) {
     next(error);
@@ -45,37 +44,39 @@ router.get("/:slug", function (req, res, next) {
   const slug = req.params.slug;
 
   const singleProduct = `
-    SELECT sku,
-           name,
-           price,
-           brand,
-           description,
-           image,
-           slug,
-           registrationDate,
-           publicationDate,
-           isNew,
-           isFavourite,
-           category
-    FROM products
-    WHERE slug = ?
+    SELECT product.sku,
+           product.name,
+           product.price,
+           product.brand,
+           product.description,
+           product.image,
+           product.slug,
+           product.registrationDate,
+           product.publicationDate,
+           product.isNew,
+           product.isFavourite,
+           category.name AS category
+    FROM products product
+    LEFT JOIN categories category ON category.id = product.category_id
+    WHERE product.slug = ?
   `;
 
   const slideshowProducts = `
-    SELECT sku,
-           name,
-           price,
-           brand,
-           description,
-           image,
-           slug,
-           registrationDate,
-           publicationDate,
-           isNew,
-           isFavourite,
-           category
-    FROM products
-    WHERE slug != ?
+    SELECT product.sku,
+           product.name,
+           product.price,
+           product.brand,
+           product.description,
+           product.image,
+           product.slug,
+           product.registrationDate,
+           product.publicationDate,
+           product.isNew,
+           product.isFavourite,
+           category.name AS category
+    FROM products product
+    LEFT JOIN categories category ON category.id = product.category_id
+    WHERE product.slug != ?
     ORDER BY RANDOM()
     LIMIT 8
   `;
