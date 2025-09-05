@@ -9,7 +9,7 @@ import productsRouter from "./routes/products.js";
 import searchRouter from "./routes/search.js";
 import adminRouter from "./routes/admin.js";
 import favoritesRouter from "./routes/favorites.js";
-import loginRouter from "./routes/login.js";
+import userRouter from "./routes/user.js";
 import newProductsRouter from "./routes/new-products.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -27,7 +27,7 @@ app.use("/api/products", productsRouter);
 app.use("/api/search", searchRouter);
 app.use("/admin", adminRouter);
 app.use("/api/favorites", favoritesRouter);
-app.use("/api/login", loginRouter);
+app.use("/api/user", userRouter);
 app.use("/api/new", newProductsRouter);
 
 app.use(
