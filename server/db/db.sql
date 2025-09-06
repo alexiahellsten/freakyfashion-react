@@ -86,6 +86,9 @@ CREATE TABLE "users" (
     password TEXT NOT NULL
 );
 
+-- Uppdaterar userstabellen för att lägga till isAdmin-kolumnen
+ALTER TABLE users 
+ADD COLUMN isAdmin BOOLEAN DEFAULT 0;
 
 -- Skapar tabellen categories för produktkategorier
 CREATE TABLE categories (
