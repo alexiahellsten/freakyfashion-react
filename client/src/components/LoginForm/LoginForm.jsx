@@ -4,9 +4,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useAuth } from "@/contexts/UserAuthContext"; 
 
 function LoginForm() {
   const navigate = useNavigate();
+  const { setUser } = useAuth();  // Hämtar setUser från AuthContext via hooken
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -29,6 +31,9 @@ function LoginForm() {
       }
       const data = await response.json();
       console.log("Inloggning lyckades:", data);  
+
+      // Uppdaterar användarens tillstånd i AuthContext
+       setUser(data.user);
 
       // Sparar använfdarinformation i sessionStorage
       sessionStorage.setItem("user", JSON.stringify(data.user));
