@@ -16,8 +16,22 @@ function LoginForm() {
     setLoading(true);
 
     try {
-      // TODO: Lägg till funktionalitet för inloggning
-     
+      const response = await fetch("http://localhost:8000/api/user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          credentials: "include", //Sparar sessionen via cookies
+        },
+        body: JSON.stringify({ email, password }),
+      }); 
+      if (!response.ok) {
+        throw new Error("Något gick fel vid inloggningen");
+      }
+      const data = await response.json();
+      console.log("Inloggning lyckades:", data);  
+
+      // Sparar använfdarinformation i sessionStorage
+      sessionStorage.setItem("user", JSON.stringify(data.user));
 
       //Navigerar till profilen - kolla upp om detta ska göras via backend
         navigate("/profile");

@@ -78,6 +78,12 @@ function requireLogin(req, res, next) {
 
 // Profil-route som endast går att komma åt som inloggad användare
 router.get("/profile", requireLogin, (req, res) => {
+
+  if (req.session.userId) {
+    console.log("Välkommen tillbaka:", req.session.userId);
+  } else {
+    console.log("Användaren är inte inloggad");
+  } 
   res.json({ message: "Välkommen tillbaka!", user: { id: req.session.userId, username: req.session.email } });
 });
 

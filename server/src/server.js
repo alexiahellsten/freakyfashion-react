@@ -15,13 +15,32 @@ import newProductsRouter from "./routes/new-products.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const port = 8000;
-const sessionSecret = process.env.SESSION_SECRET
+const port = process.env.PORT || 8000;
 
 const app = express();
-app.use(cors());
+
+//Konfiguerar CORS för att tillåta cookies
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true
+}));
+
+// Konfigurerar sessioner
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    saveUninitialized: false,
+    resave: false,
+    cookie: {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60, // Sessionen varar i 1 timme
+    },
+  })
+);
+
+// Middleware
 app.use(express.json()); 
-app.use(express.static(join(__dirname, 'public')));
+app.use(express.static(join(__dirname, "public")));
 
 app.use("/api/products", productsRouter);
 app.use("/api/search", searchRouter);
@@ -30,23 +49,11 @@ app.use("/api/favorites", favoritesRouter);
 app.use("/api/user", userRouter);
 app.use("/api/new", newProductsRouter);
 
-app.use(
-  session({
-    secret: sessionSecret, 
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      httpOnly: true,
-      secure: process.env.NODE_ENV,
-      maxAge: 1000 * 60 * 60, // Sätter cookie till maxlängd 1 timme
-    },
-  })
-);
-
 app.get("/", (req, res) => {
   res.send("Välkommen till Freaky Fashions API! Tillgängliga sökvägar: /api/products, /api/search, /admin, /favorites, /new");
 });
 
+// Felhanterare
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({
