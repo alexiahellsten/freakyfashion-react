@@ -34,7 +34,13 @@ router.get("/", function (req, res, next) {
 
   try {
     const rows = db.prepare(products).all(...params);
-    res.json(rows);
+
+  //Sparar informationen om inloggning i sessionen
+  res.json({
+    //Sparar värdet som en boolean (sant/falskt) med !!
+      isLoggedIn: !!req.session.userId,
+      products: rows,
+    });
   } catch (error) {
     next(error);
   }
@@ -62,7 +68,7 @@ router.post("/", (req, res, next) => {
   }
 });
 
-// Middleware för att kontrollera sessionen
+// Middleware för att kontrollera om användaren är inloggad
 function requireLogin(req, res, next) {
   if (!req.session.userId) {
     return res.status(401).json({ message: "Obehörig" });
