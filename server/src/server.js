@@ -1,9 +1,13 @@
-import "dotenv/config";
+import dotenv from "dotenv";
 import express from "express";
 import session from "express-session";
 import cors from "cors";
 import { fileURLToPath } from "url";
-import { dirname, join } from "path"; 
+import { dirname, join } from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+dotenv.config({ path: join(__dirname, "../../.env") }); 
 
 import productsRouter from "./routes/products.js";
 import searchRouter from "./routes/search.js";
@@ -11,9 +15,6 @@ import adminRouter from "./routes/admin.js";
 import favoritesRouter from "./routes/favorites.js";
 import userRouter from "./routes/user.js";
 import newProductsRouter from "./routes/new-products.js";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 const port = process.env.PORT || 8000;
 
@@ -28,12 +29,14 @@ app.use(cors({
 // Konfigurerar sessioner
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET || "test",
     saveUninitialized: false,
     resave: false,
     cookie: {
       httpOnly: true,
       maxAge: 1000 * 60 * 60, // Sessionen varar i 1 timme
+      sameSite: "lax", // Tillåter cookies för CORS-requests
+      secure: false,
     },
   })
 );
@@ -42,11 +45,11 @@ app.use(
 app.use(express.json()); 
 app.use(express.static(join(__dirname, "public")));
 
+app.use("/api/user", userRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/search", searchRouter);
 app.use("/admin", adminRouter);
 app.use("/api/favorites", favoritesRouter);
-app.use("/api/user", userRouter);
 app.use("/api/new", newProductsRouter);
 
 app.get("/", (req, res) => {
