@@ -11,6 +11,7 @@ import NewProduct from "./pages/Admin/NewProduct";
 import Favorites from "./pages/Favorites/Favorites";
 import New from "./pages/New/New";
 import Login from "./pages/Login/Login";
+import Profile from "./pages/Login/Profile";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/admin" element={<Admin />} />
         <Route path="/admin/products/new" element={<NewProduct />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </AuthProvider>
   );
