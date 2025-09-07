@@ -2,44 +2,16 @@ import express from "express";
 const router = express.Router();
 import db from "../../db/db.js";
 
-// GET /login
+// GET /api/user - Check authentication status
 router.get("/", function (req, res, next) {
-  const searchQuery = req.query.q; 
-
-  let products = `
-    SELECT id,
-           sku,
-           name,
-           price,
-           brand,
-           description,
-           image,
-           slug,
-           registrationDate,
-           publicationDate,
-           isNew,
-           isFavourite, 
-           category
-    FROM products
-    ORDER BY RANDOM()
-    LIMIT 8
-  `;
-
-  let params = [];
-
-  if (searchQuery) {
-    products += " WHERE name LIKE ? OR description LIKE ?";
-    params = [`%${searchQuery}%`, `%${searchQuery}%`];
-  }
-
   try {
-    const rows = db.prepare(products).all(...params);
-
-  //Sparar informationen om inloggning i sessionen
-  res.json({
-    //Sparar värdet som en boolean (sant/falskt) med !!
+    //Sparar informationen om inloggning i sessionen
+    res.json({
+      //Sparar värdet som en boolean (sant/falskt) med !!
       isLoggedIn: !!req.session.userId,
-      products: rows,
+      userId: req.session.userId,
+      email: req.session.email,
+      isAdmin: req.session.isAdmin
     });
   } catch (error) {
     next(error);
@@ -64,6 +36,9 @@ router.post("/", (req, res, next) => {
     req.session.isAdmin = user.isAdmin;
 
     res.json({ message: "Inloggningen lyckades", user: { id: user.id, email: user.email, isAdmin: user.isAdmin } });
+    
+    //TODO: Ta bort efter felsökning
+    console.log("Inloggad användare:", user);
   } catch (err) {
     next(err);
   }
@@ -71,11 +46,25 @@ router.post("/", (req, res, next) => {
 
 // Middleware för att kontrollera om användaren är inloggad
 function requireLogin(req, res, next) {
+  console.log("Session i requireLogin:", req.session);
   if (!req.session.userId) {
-    return res.status(401).json({ message: "Obehörig" });
+    return res.status(401).json({ message: "Obehörig användare" });
   }
   next();
 }
+
+// GET /status - Kontrollerar om användaren är inloggad
+router.get("/status", (req, res) => {
+  if (req.session && req.session.userId) {
+    res.json({
+      isLoggedIn: true,
+      userId: req.session.userId,
+      email: req.session.email
+    });
+  } else {
+    res.json({ isLoggedIn: false });
+  }
+});
 
 // Profil-route som endast går att komma åt som inloggad användare
 router.get("/profile", requireLogin, (req, res) => {
@@ -86,6 +75,12 @@ router.get("/profile", requireLogin, (req, res) => {
     console.log("Användaren är inte inloggad");
   } 
   res.json({ message: "Välkommen tillbaka!", user: { id: req.session.userId, username: req.session.email } });
+});
+
+router.post("/logout", (req, res) => {
+  req.session.destroy(() => {
+    res.json({ message: "Utloggning lyckades" });
+  });
 });
 
 // Profil-route som endast går att komma åt som inloggad användare
