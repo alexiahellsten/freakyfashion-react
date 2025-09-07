@@ -61,8 +61,9 @@ router.post("/", (req, res, next) => {
     // Spara användaren i sessionen
     req.session.userId = user.id;
     req.session.email = user.email;
+    req.session.isAdmin = user.isAdmin;
 
-    res.json({ message: "Inloggningen lyckades", user: { id: user.id, email: user.email } });
+    res.json({ message: "Inloggningen lyckades", user: { id: user.id, email: user.email, isAdmin: user.isAdmin } });
   } catch (err) {
     next(err);
   }
