@@ -14,10 +14,11 @@ import Login from "./pages/Login/Login";
 import Profile from "./pages/Login/Profile";
 
 function App() {
+
   return (
     <AuthProvider>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home/>} />
         <Route path="/products/:slug" element={<ProductDetails />} />
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/new" element={<New />} />

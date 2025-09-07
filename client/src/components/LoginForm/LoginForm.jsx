@@ -22,8 +22,8 @@ function LoginForm() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          credentials: "include", //Sparar sessionen via cookies
         },
+        credentials: "include", //Sparar sessionen via cookies
         body: JSON.stringify({ email, password }),
       }); 
       if (!response.ok) {
