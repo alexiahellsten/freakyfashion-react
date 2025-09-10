@@ -3,27 +3,57 @@ import Navbar from "../../components/Navbar/Navbar";
 import ProductGrid from "../../components/ProductGrid/ProductGrid";
 import Footer from "../../components/Footer/Footer";
 import CallToAction from "../../components/CallToAction/CallToAction";
+import { useAuth } from "../../contexts/UserAuthContext";
 
 const API_URL = "http://localhost:8000";
 
 function Favorites() {
+  const { user } = useAuth();
   const [favoriteProducts, setFavoriteProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  //  Hämtar favoriter för gäster eller inloggade användare
+  const fetchFavorites = () => {
+    setLoading(true);
+    if (user) {
+      fetch(`${API_URL}/api/favorites`, { credentials: "include" })
+        .then((response) => response.json())
+        .then((data) => {
+          setFavoriteProducts(data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("Fel vid hämtning av favoriter:", error);
+          setLoading(false);
+        });
+    } else {
+      const favoriteIds = JSON.parse(sessionStorage.getItem("favorites") || "[]");
+      if (favoriteIds.length > 0) {
+        Promise.all(
+          favoriteIds.map(id =>
+            fetch(`${API_URL}/api/products/by-id/${id}`)
+              .then(res => res.json())
+          )
+        )
+          .then(products => {
+            setFavoriteProducts(products.filter(Boolean));
+            setLoading(false);
+          })
+          .catch(error => {
+            console.error("Fel vid hämtning av favoriter:", error);
+            setLoading(false);
+          });
+      } else {
+        setFavoriteProducts([]);
+        setLoading(false);
+      }
+    }
+  };
+
   useEffect(() => {
     document.title = "Mina favoriter";
-
-    fetch(`${API_URL}/api/favorites`)
-      .then((response) => response.json())
-      .then((data) => {
-        setFavoriteProducts(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Fel vid hämtning av nya produkter:", error);
-        setLoading(false);
-      });
-  }, []);
+    fetchFavorites();
+  }, [user]);
 
   if (loading) {
     return (
@@ -53,7 +83,7 @@ function Favorites() {
             <div className="text-center text-lg font-semibold mb-8">
               {`${favoriteProducts.length} ny${favoriteProducts.length !== 1 ? 'a' : ''} produkt${favoriteProducts.length !== 1 ? 'er' : ''}`}
             </div>
-            <ProductGrid products={favoriteProducts} />
+            <ProductGrid products={favoriteProducts} onFavoritesChange={fetchFavorites} />
           </>
         ) : (
           <div className="text-center py-12">

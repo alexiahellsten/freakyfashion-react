@@ -40,11 +40,50 @@ router.get("/", function (req, res, next) {
 });
 
 
+// GET /api/products/:id (numeric)
+router.get("/:id(\\d+)", function (req, res) {
+  const id = Number(req.params.id);
+  if (!Number.isFinite(id)) {
+    return res.status(400).json({ message: "Ogiltigt produkt-ID" });
+  }
+
+  const singleById = `
+    SELECT product.id,
+           product.sku,
+           product.name,
+           product.price,
+           product.brand,
+           product.description,
+           product.image,
+           product.slug,
+           product.registrationDate,
+           product.publicationDate,
+           product.isNew,
+           product.isFavourite,
+           category.name AS category
+    FROM products product
+    LEFT JOIN categories category ON category.id = product.category_id
+    WHERE product.id = ?
+  `;
+
+  try {
+    const row = db.prepare(singleById).get(id);
+    if (!row) {
+      return res.status(404).json({ message: "Kunde inte hitta produkten" });
+    }
+    return res.json(row);
+  } catch (error) {
+    return res.status(500).json({ message: "Fel vid hämtning av produkt" });
+  }
+});
+
+// GET /api/products/:slug (non-numeric)
 router.get("/:slug", function (req, res, next) {
   const slug = req.params.slug;
 
   const singleProduct = `
-    SELECT product.sku,
+    SELECT product.id,
+           product.sku,
            product.name,
            product.price,
            product.brand,
@@ -62,7 +101,8 @@ router.get("/:slug", function (req, res, next) {
   `;
 
   const slideshowProducts = `
-    SELECT product.sku,
+    SELECT product.id,
+           product.sku,
            product.name,
            product.price,
            product.brand,
@@ -95,6 +135,43 @@ router.get("/:slug", function (req, res, next) {
     });
   } catch (error) {
     res.status(500).send(error.message);
+  }
+});
+
+// GET /api/products/:id
+router.get("/:id", function (req, res) {
+  const id = Number(req.params.id);
+  if (!Number.isFinite(id)) {
+    return res.status(400).json({ message: "Ogiltigt produkt-ID" });
+  }
+
+  const singleById = `
+    SELECT product.id,
+           product.sku,
+           product.name,
+           product.price,
+           product.brand,
+           product.description,
+           product.image,
+           product.slug,
+           product.registrationDate,
+           product.publicationDate,
+           product.isNew,
+           product.isFavourite,
+           category.name AS category
+    FROM products product
+    LEFT JOIN categories category ON category.id = product.category_id
+    WHERE product.id = ?
+  `;
+
+  try {
+    const row = db.prepare(singleById).get(id);
+    if (!row) {
+      return res.status(404).json({ message: "Kunde inte hitta produkten" });
+    }
+    return res.json(row);
+  } catch (error) {
+    return res.status(500).json({ message: "Fel vid hämtning av produkt" });
   }
 });
 

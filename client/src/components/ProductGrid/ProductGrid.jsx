@@ -1,38 +1,82 @@
+import { useEffect, useState } from "react";
 import { Heart } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "../../contexts/UserAuthContext";
 
-function ProductGrid({ products }) {
+function ProductGrid({ products, onFavoritesChange }) {
   const { user } = useAuth();
+  const [favoriteProduct, setFavoriteProduct] = useState([]);
 
-  
-  const handleFavoriteClick = (product) => {
-    console.log("Skickar favoritmarkerad produkt:", product.id);
-
+  // Hämtar favoriter från backend-apiet eller sessionStorage (utloggad/gäst)
+  const fetchFavorites = () => {
     if (user) {
-      // Om användaren är inloggad, spara favoriten till databasen
       fetch("http://localhost:8000/api/favorites", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
         credentials: "include",
-        body: JSON.stringify({ productId: product.id }),
       })
         .then((res) => res.json())
-        .catch((err) => console.error("Kunde inte lägga till favorit:", err));
+        .then((data) => setFavoriteProduct(data.map(p => p.id)))
+        .catch(() => setFavoriteProduct([]));
     } else {
-
-      // Om användaren inte är inloggad, spara favoriten till sessionStorage istället
-      let favorites = JSON.parse(sessionStorage.getItem("favorites") || "[]");
-
-      if (!favorites.includes(product.id)) {
-        favorites.push(product.id);
-        sessionStorage.setItem("favorites", JSON.stringify(favorites));
-      }
+      const favorites = JSON.parse(sessionStorage.getItem("favorites") || "[]");
+      setFavoriteProduct(favorites);
     }
   };
 
+  useEffect(() => {
+    fetchFavorites();
+  }, [user]);
+
+  const handleFavoriteClick = (product) => {
+    const isFavorite = favoriteProduct.includes(product.id);
+
+    if (isFavorite) {
+      // Ta bort från favoriter
+      if (user) {
+        fetch(`http://localhost:8000/api/favorites/${product.id}`, {
+          method: "DELETE",
+          credentials: "include",
+        })
+          .then((res) => res.json())
+          .then(() => {
+            fetchFavorites();
+            if (onFavoritesChange) onFavoritesChange();
+          })
+          .catch((err) => console.error("Kunde inte ta bort favorit:", err));
+      } else {
+        let favorites = JSON.parse(sessionStorage.getItem("favorites") || "[]");
+        favorites = favorites.filter(id => id !== product.id);
+        sessionStorage.setItem("favorites", JSON.stringify(favorites));
+        setFavoriteProduct(favorites);
+        if (onFavoritesChange) onFavoritesChange();
+      }
+    } else {
+      // Lägg till i favoriter
+      if (user) {
+        fetch("http://localhost:8000/api/favorites", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ productId: product.id }),
+        })
+          .then((res) => res.json())
+          .then(() => {
+            fetchFavorites();
+            if (onFavoritesChange) onFavoritesChange();
+          })
+          .catch((err) => console.error("Kunde inte lägga till favorit:", err));
+      } else {
+        let favorites = JSON.parse(sessionStorage.getItem("favorites") || "[]");
+        if (!favorites.includes(product.id)) {
+          favorites.push(product.id);
+          sessionStorage.setItem("favorites", JSON.stringify(favorites));
+          setFavoriteProduct(favorites);
+          if (onFavoritesChange) onFavoritesChange();
+        }
+      }
+    }
+  };
 
   if (!products || products.length === 0) {
     return <p>Produkter inte tillgängliga.</p>;
@@ -65,22 +109,22 @@ function ProductGrid({ products }) {
             </a>
 
             <div className="heart-container relative">
-    <div className="heart-icon absolute text-2xl text-black bottom-2.5 right-2.5 z-10 transition-transform duration-300 group-hover:scale-110 cursor-pointer">
-      {product.isFavourite ? (
-        <Heart
-          fill="black"
-          stroke="black"
-          onClick={() => handleFavoriteClick(product)}
-          title="Lägg till i favoriter"
-        />
-      ) : (
-        <Heart
-          onClick={() => handleFavoriteClick(product)}
-          title="Lägg till i favoriter"
-        />
-      )}
-    </div>
-  </div>
+              <div className="heart-icon absolute text-2xl text-black bottom-2.5 right-2.5 z-10 transition-transform duration-300 group-hover:scale-110 cursor-pointer">
+                {favoriteProduct.includes(product.id) ? (
+                  <Heart
+                    fill="black"
+                    stroke="black"
+                    onClick={() => handleFavoriteClick(product)}
+                    title="Ta bort från favoriter"
+                  />
+                ) : (
+                  <Heart
+                    onClick={() => handleFavoriteClick(product)}
+                    title="Lägg till i favoriter"
+                  />
+                )}
+              </div>
+            </div>
           </div>
 
           <CardContent className="p-4">
