@@ -142,3 +142,20 @@ BEGIN
   END
   WHERE id = NEW.id;  -- Uppdaterar produkten med det nya värdet för isNew
 END
+
+
+-- Skapar en ny favorites med rätt foreign keys och relationer
+CREATE TABLE favorites_new (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL,
+  product_id INTEGER NOT NULL,
+  UNIQUE(user_id, product_id),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+INSERT INTO favorites_new (id, user_id, product_id)
+SELECT id, user_id, product_id FROM favorites;
+
+DROP TABLE favorites;
+ALTER TABLE favorites_new RENAME TO favorites;
