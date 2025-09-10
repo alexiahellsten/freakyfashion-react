@@ -1,11 +1,10 @@
-import { v4 as uuidv4 } from "uuid";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
-import { useBasket } from "../../contexts/BasketContext";
+import { useBasketOperations } from "../../hooks/useBasketOperations";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -15,24 +14,15 @@ const API_URL = "http://localhost:8000";
 
 const ProductPage = ({ setProduct }) => {
   const navigate = useNavigate();
-  const { dispatch } = useBasket();
+  const { addToBasket } = useBasketOperations();
   const { slug } = useParams();
   const [product, setLocalProduct] = useState(null);
   const [allProducts, setAllProducts] = useState([]);
   const [similarProducts, setSimilarProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const addToBasket = () => {
-    dispatch({
-      type: "ADD_ITEM",
-      payload: {
-        id: uuidv4(),
-        productId: product.id,
-        name: product.name,
-        price: product.price,
-        quantity: 1,
-      },
-    });
+  const handleAddToBasket = async () => {
+    await addToBasket(product, 1);
     navigate("/basket");
   };
 
@@ -115,7 +105,7 @@ const ProductPage = ({ setProduct }) => {
               {product.price} SEK
             </p>
             <Button
-              onClick={addToBasket}
+              onClick={handleAddToBasket}
               className="w-full sm:w-2/3 md:w-1/2 lg:w-1/4 px-4 py-2 mt-2 text-base"
             >
               Lägg till i varukorg
