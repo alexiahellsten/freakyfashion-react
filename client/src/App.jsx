@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router";
 import { AuthProvider } from "./contexts/UserAuthContext";
+import { BasketProvider } from "./contexts/BasketContext";
 import Home from "./pages/Home/Home";
 import ProductDetails from "./pages/Products/ProductDetails";
 import Basket from "./pages/Basket/Basket";
@@ -17,20 +18,22 @@ function App() {
 
   return (
     <AuthProvider>
-      <Routes>
-        <Route path="/" element={<Home/>} />
-        <Route path="/products/:slug" element={<ProductDetails />} />
-        <Route path="/favorites" element={<Favorites />} />
-        <Route path="/new" element={<New />} />
-        <Route path="/basket" element={<Basket />} />
-        <Route path="/checkout" element={<Checkout />} />
-        <Route path="/order/confirmation" element={<OrderConfirmation />} />
-        <Route path="/search/:slug" element={<Search />} />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/admin/products/new" element={<NewProduct />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/profile" element={<Profile />} />
-      </Routes>
+      <BasketProvider>
+        <Routes>
+          <Route path="/" element={<Home/>} />
+          <Route path="/products/:slug" element={<ProductDetails />} />
+          <Route path="/favorites" element={<Favorites />} />
+          <Route path="/new" element={<New />} />
+          <Route path="/basket" element={<Basket />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/order/confirmation" element={<OrderConfirmation />} />
+          <Route path="/search/:slug" element={<Search />} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/admin/products/new" element={<NewProduct />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/profile" element={<Profile />} />
+        </Routes>
+      </BasketProvider>
     </AuthProvider>
   );
 }
