@@ -31,7 +31,7 @@ function Favorites() {
       if (favoriteIds.length > 0) {
         Promise.all(
           favoriteIds.map(id =>
-            fetch(`${API_URL}/api/products/by-id/${id}`)
+            fetch(`${API_URL}/api/products/${id}`)
               .then(res => res.json())
           )
         )
