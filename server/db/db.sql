@@ -159,3 +159,25 @@ SELECT id, user_id, product_id FROM favorites;
 
 DROP TABLE favorites;
 ALTER TABLE favorites_new RENAME TO favorites;
+
+
+-- Skapar en varukorgstabell med relationer mellan basket, user och product
+CREATE TABLE basket (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL,
+  product_id INTEGER NOT NULL,
+  quantity INTEGER NOT NULL DEFAULT 1,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(user_id, product_id),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- Skapar en trigger för att uppdatera tidsstämpeln vid ändring i varukorgen
+CREATE TRIGGER update_basket_timestamp
+AFTER UPDATE ON basket
+FOR EACH ROW
+BEGIN
+  UPDATE basket SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
+END;
