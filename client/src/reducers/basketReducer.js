@@ -49,6 +49,20 @@ const basketReducer = (state, action) => {
         basket: [],
       };
 
+    // Hämtar varukorgen från backend
+    case "SET_BASKET":
+      return {
+        ...state,
+        basket: action.payload,
+      };
+
+    // Bestämmer laddningsstatus
+    case "SET_LOADING":
+      return {
+        ...state,
+        loading: action.payload,
+      };
+
       
 // Om åtgärden (action.type) inte matchar något case returneras det nuvarande tillståndet oförändrat.
     default:

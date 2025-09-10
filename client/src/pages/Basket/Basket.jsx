@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import { useBasket } from "../../contexts/BasketContext"; // Import the custom hook
+import { useBasketOperations } from "../../hooks/useBasketOperations";
+import ProductGrid from "../../components/ProductGrid/ProductGrid";
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import StoreInformation from "../../components/StoreInformation/StoreInformation";
@@ -27,8 +28,7 @@ function Basket() {
   const navigate = useNavigate();
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const { state, dispatch } = useBasket();
-  const { basket } = state;
+  const { basket, removeFromBasket, updateQuantity, loading } = useBasketOperations();
 
   const handleSearch = (query) => {
     setSearchQuery(query);
@@ -49,17 +49,11 @@ function Basket() {
   }, [basket]);
 
   const removeItemFromBasket = (uuid) => {
-    dispatch({
-      type: "REMOVE_ITEM",
-      payload: { uuid },
-    });
+    removeFromBasket(uuid);
   };
 
   const updateItemQuantity = (uuid, quantity) => {
-    dispatch({
-      type: "UPDATE_ITEM",
-      payload: { uuid, quantity },
-    });
+    updateQuantity(uuid, quantity);
   };
 
   return (
