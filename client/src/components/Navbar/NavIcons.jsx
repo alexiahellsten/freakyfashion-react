@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Heart, ShoppingCart, LogIn } from "lucide-react";
+import { Heart, ShoppingCart, LogIn, CircleUser } from "lucide-react";
 import { Link } from "react-router";
 import { useBasket } from "../../contexts/BasketContext";
 
@@ -28,6 +28,11 @@ function NavIcons() {
       <Link to="/login" className="relative">
         <Button variant="ghost" size="icon" className="text-foreground">
           <LogIn />
+        </Button>
+      </Link>
+      <Link to="/profile" className="relative">
+        <Button variant="ghost" size="icon" className="text-foreground">
+          <CircleUser />
         </Button>
       </Link>
     </div>

@@ -4,7 +4,7 @@ import NavIcons from "./NavIcons";
 import SearchBar from "./SearchBar";
 
 function Navbar() {
-  const logo = "/images/logo.png";
+  // const logo = "/images/logo.png";
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
@@ -32,13 +32,14 @@ function Navbar() {
       <div className="mx-auto px-4 py-3 flex flex-col space-y-3 sm:flex-row sm:justify-between sm:space-y-0">
         <div>
           <Link to="/" onClick={handleLogoClick}>
-            <img
+            {/* <img
               src={logo}
               alt="Logo"
               className="min-w-full"
               width={400}
               height={150}
-            />
+            /> */}
+            <h1 className="text-2xl font-bold whitespace-nowrap">Freaky Fashion</h1>
           </Link>
         </div>
         <div className="flex items-center space-x-3 w-full">
