@@ -23,7 +23,7 @@ router.get("/", requireLogin, (req, res) => {
         basket.updated_at,
         product.id as productroduct_id,
         product.name,
-        product.productrice,
+        product.price,
         product.brand,
         product.image,
         product.slug
