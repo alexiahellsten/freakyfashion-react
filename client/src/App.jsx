@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router";
 import { AuthProvider } from "./contexts/UserAuthContext";
 import { BasketProvider } from "./contexts/BasketContext";
+
 import Home from "./pages/Home/Home";
 import ProductDetails from "./pages/Products/ProductDetails";
 import Basket from "./pages/Basket/Basket";
@@ -13,6 +14,7 @@ import Favorites from "./pages/Favorites/Favorites";
 import New from "./pages/New/New";
 import Login from "./pages/Login/Login";
 import Profile from "./pages/Login/Profile";
+import Register from "./pages/Register/Register";
 
 function App() {
 
@@ -32,6 +34,7 @@ function App() {
           <Route path="/admin/products/new" element={<NewProduct />} />
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </BasketProvider>
     </AuthProvider>

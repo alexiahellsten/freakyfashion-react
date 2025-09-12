@@ -5,6 +5,7 @@ import db from "../../../db/db.js";
 // POST /register - Skapa en ny användare
 router.post("/", (req, res, next) => {
   const { email, password } = req.body;
+
   try {
     const existingUser = db.prepare("SELECT * FROM users WHERE email = ?").get(email);
     if (existingUser) {
@@ -15,7 +16,9 @@ router.post("/", (req, res, next) => {
     const result = db.prepare("INSERT INTO users (email, password) VALUES (?, ?)").run(email, password);
     const newUser = db.prepare("SELECT * FROM users WHERE id = ?").get(result.lastInsertRowid);
 
-    // Spara den nya användaren i sessionen
+    console.log("Hämtade ny användare:", newUser);
+
+    // Spara den nya användaren i sessionen så att den kommer ihåg inloggningen
     req.session.userId = newUser.id;
     req.session.email = newUser.email;
     req.session.isAdmin = newUser.isAdmin;
@@ -31,7 +34,7 @@ router.post("/", (req, res, next) => {
       
     console.log("Registering user:", email);
     console.log("User created:", newUser);
-    
+
   } catch (err) {
     next(err);
   }
