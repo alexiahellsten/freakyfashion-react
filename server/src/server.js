@@ -14,7 +14,8 @@ import searchRouter from "./routes/search.js";
 import adminRouter from "./routes/admin.js";
 import favoritesRouter from "./routes/favorites.js";
 import basketRouter from "./routes/basket.js";
-import userRouter from "./routes/user.js";
+import userRouter from "./routes/user/existing-user.js";
+import registerRouter from "./routes/user/register-user.js";
 import newProductsRouter from "./routes/new-products.js";
 
 const port = process.env.PORT || 8000;
@@ -53,9 +54,10 @@ app.use("/admin", adminRouter);
 app.use("/api/favorites", favoritesRouter);
 app.use("/api/basket", basketRouter);
 app.use("/api/new", newProductsRouter);
+app.use("/api/register", registerRouter);
 
 app.get("/", (req, res) => {
-  res.send("Välkommen till Freaky Fashions API! Tillgängliga sökvägar: /api/products, /api/search, /admin, /api/favorites, /api/basket, /api/new");
+  res.send("Välkommen till Freaky Fashions API! Tillgängliga sökvägar: /api/products, /api/search, /admin, /api/favorites, /api/basket, /api/new, /api/register, /api/user");
 });
 
 // Felhanterare
