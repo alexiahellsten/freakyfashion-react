@@ -16,7 +16,22 @@ function Profile() {
 
   useEffect(() => {
     document.title = "Profil";
-  }, []);
+    if (!user) {
+      const timer = setTimeout(() => navigate("/login"), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [user, navigate]);
+
+  if (!user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-lg text-center flex flex-col justify-center">
+          <span>Du måste vara inloggad för att se din profil.</span>
+          <span>Omdirigerar till inloggningssidan..</span>
+        </div>
+      </div>
+    );
+  }
 
   const handleLogout = async () => {
     setLoading(true);
