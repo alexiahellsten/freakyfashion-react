@@ -31,9 +31,9 @@ router.post("/", (req, res, next) => {
         email: newUser.email,
         isAdmin: newUser.isAdmin 
       } });
-      
-    console.log("Registering user:", email);
-    console.log("User created:", newUser);
+
+    console.log("Registrerar användare:", email);
+    console.log("Användare skapad:", newUser);
 
   } catch (err) {
     next(err);
