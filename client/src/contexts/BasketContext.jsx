@@ -72,13 +72,32 @@ export const BasketProvider = ({ children }) => {
 
   const syncBasketToBackend = async () => {
     try {
+      // Töm backend-varukorgen och skicka upp nuvarande tillstånd
+      await fetch(`${API_URL}/api/basket`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+
+      for (const item of state.basket) {
+        await fetch(`${API_URL}/api/basket`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            productId: item.productId,
+            quantity: item.quantity,
+          }),
+        });
+      }
     } catch (error) {
       console.error("Fel vid syncning med backend:", error);
     }
   };
 
   return (
-    <BasketContext.Provider value={{ state, dispatch, fetchBasketFromBackend }}>
+    <BasketContext.Provider value={{ state, dispatch, fetchBasketFromBackend, syncBasketToBackend }}>
       {children}
     </BasketContext.Provider>
   );

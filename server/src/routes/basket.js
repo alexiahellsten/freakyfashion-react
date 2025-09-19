@@ -2,17 +2,24 @@ import express from "express";
 const router = express.Router();
 import db from "../../db/db.js";
 
-// Middleware för att kontrollera att användaren är inloggad
-function requireLogin(req, res, next) {
-  if (!req.session.userId) {
-    return res.status(401).json({ message: "Obehörig användare" });
+// Hämtar inloggad användare eller en gästanvändare
+function getUserId(req) {
+  const guestEmail = "guest@freakyfashion.se";
+  
+  if (req.session && req.session.userId) {
+    return req.session.userId;
   }
-  next();
+  
+  const existingGuest = db.prepare("SELECT id FROM users WHERE email = ?").get(guestEmail);
+
+  if (existingGuest) return existingGuest.id;
+  const result = db.prepare("INSERT INTO users (email, password) VALUES (?, ?)").run(guestEmail, "guest");
+  return result.lastInsertRowid;
 }
 
 // GET /api/basket
-router.get("/", requireLogin, (req, res) => {
-  const userId = req.session.userId;
+router.get("/", (req, res) => {
+  const userId = getUserId(req);
   
   try {
     const rows = db.prepare(`
@@ -21,7 +28,7 @@ router.get("/", requireLogin, (req, res) => {
         basket.quantity,
         basket.created_at,
         basket.updated_at,
-        product.id as productroduct_id,
+        product.id as product_id,
         product.name,
         product.price,
         product.brand,
@@ -41,9 +48,9 @@ router.get("/", requireLogin, (req, res) => {
 });
 
 // POST /api/basket
-router.post("/", requireLogin, (req, res) => {
+router.post("/", (req, res) => {
   const { productId, quantity = 1 } = req.body;
-  const userId = req.session.userId;
+  const userId = getUserId(req);
 
   if (!productId) {
     return res.status(400).json({ message: "productId krävs" });
@@ -98,10 +105,10 @@ router.post("/", requireLogin, (req, res) => {
 });
 
 // PUT /api/basket/:basketId - Uppdatera kvantiteten av produkten som finns i varukorgen
-router.put("/:basketId", requireLogin, (req, res) => {
+router.put("/:basketId", (req, res) => {
   const { basketId } = req.params;
   const { quantity } = req.body;
-  const userId = req.session.userId;
+  const userId = getUserId(req);
 
   if (!quantity || quantity < 1) {
     return res.status(400).json({ message: "Antal måste vara minst 1" });
@@ -129,9 +136,9 @@ router.put("/:basketId", requireLogin, (req, res) => {
 });
 
 // DELETE /api/basket/:basketId - Radera från varukorgen
-router.delete("/:basketId", requireLogin, (req, res) => {
+router.delete("/:basketId", (req, res) => {
   const { basketId } = req.params;
-  const userId = req.session.userId;
+  const userId = getUserId(req);
 
   try {
     const result = db.prepare(
@@ -150,8 +157,8 @@ router.delete("/:basketId", requireLogin, (req, res) => {
 });
 
 // DELETE /api/basket - Töm hela varukorgen
-router.delete("/", requireLogin, (req, res) => {
-  const userId = req.session.userId;
+router.delete("/", (req, res) => {
+  const userId = getUserId(req);
 
   try {
     db.prepare("DELETE FROM basket WHERE user_id = ?").run(userId);

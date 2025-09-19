@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
+import { useBasket } from "../../contexts/BasketContext";
 import { useBasketOperations } from "../../hooks/useBasketOperations";
 import ProductGrid from "../../components/ProductGrid/ProductGrid";
 import Navbar from "../../components/Navbar/Navbar";
@@ -29,6 +30,7 @@ function Basket() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const { basket, removeFromBasket, updateQuantity, loading } = useBasketOperations();
+  const { syncBasketToBackend } = useBasket();
 
   const handleSearch = (query) => {
     setSearchQuery(query);
@@ -208,7 +210,7 @@ function Basket() {
 
           <div className="flex justify-center m-5">
             <Button
-              onClick={() => navigate("/checkout")}
+              onClick={async () => { await syncBasketToBackend(); navigate("/checkout"); }}
               className="p-4 m-2 w-1/4 text-lg sm:text-base sm:w-1/4 lg:1/3"
             >
               Till kassan
