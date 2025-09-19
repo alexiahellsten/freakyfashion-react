@@ -13,8 +13,6 @@ function CheckoutForm() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    dispatch({ type: "CLEAR_BASKET" });
-
     navigate("/order/confirmation");
   };
 

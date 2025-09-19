@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useBasket } from "../../contexts/BasketContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
@@ -8,9 +9,39 @@ import StoreInformation from "../../components/StoreInformation/StoreInformation
 import CallToAction from "../../components/CallToAction/CallToAction";
 
 function OrderConfirmation() {
+  const { state, dispatch } = useBasket();
+
   useEffect(() => {
     document.title = "Orderkonfirmation";
   }, []);
+
+  useEffect(() => {
+    // Skicka ordern till backend när sidan laddas
+    const placeOrder = async () => {
+      try {
+        const orderItems = state.basket.map(item => ({ productId: item.productId, quantity: item.quantity }));
+
+        if (orderItems.length === 0) return;
+
+        const response = await fetch("http://localhost:8000/api/orders", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ orderItems }),
+        });
+
+        if (response.ok) {
+          dispatch({ type: "CLEAR_BASKET" });
+        } else {
+          console.error("Kunde inte spara ordern");
+        }
+      } catch (error) {
+        console.error("Fel vid sparning av order:", error);
+      }
+    };
+
+    placeOrder();
+  }, [state.basket, dispatch]);
 
   return (
     <>
