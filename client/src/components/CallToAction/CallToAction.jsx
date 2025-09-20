@@ -3,13 +3,9 @@ import { Link } from "react-router";
 function CallToAction() {
   return (
     <div className="bg-black m-auto p-4 text-center text-white text-sm flex justify-between">
-      <span >Kundservice</span>
+      <span>Kundservice</span>
       <span>Fri frakt för medlemmar när du shoppar för minst 399:-</span>
-
-      {/* TODO: Ersätt detta med en länk till registreringssidan */}
-      <Link to="/register">
-       Registrera
-      </Link>
+      <Link to="/register">Registrera</Link>
     </div>
   );
 }
