@@ -1,19 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import NavIcons from "./NavIcons";
 import SearchBar from "./SearchBar";
 
 function Navbar() {
-  // const logo = "/images/logo.png";
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+  const [categories, setCategories] = useState([]);
 
-  const navigationLinks = [
-    { id: 1, name: "Nyheter", url: "/nyheter" },
-    { id: 2, name: "Topplistan", url: "/topplistan" },
-    { id: 3, name: "Rea", url: "/rea" },
-    { id: 4, name: "Kampanjer", url: "/kampanjer" },
-  ];
+  const categoryNames = {
+    klader: "Kläder",
+    accessoarer: "Accessoarer",
+    skor: "Skor",
+  };
+
+  useEffect(() => {
+    fetch("http://localhost:8000/api/categories")
+      .then((res) => res.json())
+      .then((data) => setCategories(data))
+      .catch((err) => console.error("Kunde inte hämta kategorier:", err));
+  }, []);
 
   const handleSearch = (event) => {
     event.preventDefault();
@@ -39,7 +45,9 @@ function Navbar() {
               width={400}
               height={150}
             /> */}
-            <h1 className="text-2xl font-bold whitespace-nowrap">Freaky Fashion</h1>
+            <h1 className="text-2xl font-bold whitespace-nowrap">
+              Freaky Fashion
+            </h1>
           </Link>
         </div>
         <div className="flex items-center space-x-3 w-full">
@@ -54,13 +62,14 @@ function Navbar() {
         </div>
       </div>
       <nav className="w-full px-4 flex flex-col space-y-2 text-sm md:text-base md:flex-row md:space-y-0 md:space-x-6">
-        {navigationLinks.map((link) => (
+        {categories.map((category) => (
           <Link
-            key={link.id}
-            to={link.url}
+            key={category.id}
+            to={`/categories/${category.slug}`}
             className="text-foreground hover:text-primary"
           >
-            {link.name}
+            {categoryNames[category.slug] ||
+              category.slug.charAt(0).toUpperCase() + category.slug.slice(1)}
           </Link>
         ))}
       </nav>

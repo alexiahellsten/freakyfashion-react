@@ -13,11 +13,13 @@ function Categories() {
   const categoryNames = {
     klader: "Kläder",
     accessoarer: "Accessoarer",
-    skor: "Skor"
+    skor: "Skor",
   };
 
   // Mappar slugs till kategoriernas namn
-  const categoryName = categoryNames[slug] || (slug ? slug.charAt(0).toUpperCase() + slug.slice(1) : "");
+  const categoryName =
+    categoryNames[slug] ||
+    (slug ? slug.charAt(0).toUpperCase() + slug.slice(1) : "");
 
   const fetchCategoryProducts = () => {
     setLoading(true);
@@ -52,7 +54,7 @@ function Categories() {
         <CallToAction />
         <Navbar />
       </header>
-      
+
       <main className="container mx-auto px-4 py-8">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold mb-4">{categoryName}</h1>
@@ -64,19 +66,22 @@ function Categories() {
         {categoryProducts.length > 0 ? (
           <>
             <div className="text-center text-lg font-semibold mb-8">
-              {`${categoryProducts.length} produkt${categoryProducts.length !== 1 ? 'er' : ''} hittade`}
+              {`${categoryProducts.length} produkt${
+                categoryProducts.length !== 1 ? "er" : ""
+              } hittade`}
             </div>
             <ProductGrid products={categoryProducts} />
           </>
         ) : (
           <div className="text-center py-12">
-            <h2 className="text-xl font-semibold mb-4">Inga produkter hittades i denna kategori</h2>
+            <h2 className="text-xl font-semibold mb-4">
+              Inga produkter hittades i denna kategori
+            </h2>
             <p className="text-gray-600">
               Prova en annan kategori eller kom tillbaka senare.
             </p>
           </div>
         )}
-
       </main>
       <Footer />
     </>
