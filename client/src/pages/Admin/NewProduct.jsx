@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import Header from "../../components/Admin/Header";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,20 @@ const API_URL = "http://localhost:8000";
 
 function NewProduct() {
   const navigate = useNavigate();
+  const [categories, setCategories] = useState([]);
+
+  const categoryNames = {
+    klader: "Kläder",
+    skor: "Skor",
+    accessoarer: "Accessoarer",
+  };
+
+  useEffect(() => {
+    fetch("http://localhost:8000/api/categories")
+      .then((res) => res.json())
+      .then((data) => setCategories(data));
+  }, []);
+
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -204,27 +218,26 @@ function NewProduct() {
                     <Label className="p-1 font-semibold text-md">
                       Kategori
                     </Label>
-                    <div className="flex flex-col gap-3">
-                      {["kläder", "skor", "accessoarer", "väskor"].map(
-                        (category) => (
-                          <div
-                            key={category}
-                            className="flex items-center space-x-2"
-                          >
-                            <Checkbox
-                              id={category}
-                              checked={formData.category === category}
-                              onCheckedChange={() =>
-                                handleCategoryChange(category)
-                              }
-                            />
-                            <Label htmlFor={category} className="capitalize">
-                              {category}
-                            </Label>
-                          </div>
-                        )
-                      )}
-                    </div>
+                    {categories.map((category) => (
+                      <div
+                        key={category.id}
+                        className="flex items-center gap-2"
+                      >
+                        <Checkbox
+                          id={category.id}
+                          checked={formData.category_id === String(category.id)}
+                          onCheckedChange={() =>
+                            setFormData((prev) => ({
+                              ...prev,
+                              category_id: String(category.id),
+                            }))
+                          }
+                        />
+                        <Label htmlFor={category.id} className="capitalize">
+                          {categoryNames[category.slug] || category.slug}
+                        </Label>
+                      </div>
+                    ))}
                   </div>
                   <Button type="submit" className="w-full sm:w-1/6">
                     Lägg till

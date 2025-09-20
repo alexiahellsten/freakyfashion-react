@@ -17,7 +17,7 @@ router.get("/", function (req, res, next) {
 
   let newProductsQuery = `
     SELECT id, sku, name, price, brand, description, image, slug,
-           registrationDate, publicationDate, isNew, isFavourite, category
+           registrationDate, publicationDate, isNew, isFavourite, category_id
     FROM products
     WHERE isNew = 1 
       AND DATE(publicationDate) >= ? 

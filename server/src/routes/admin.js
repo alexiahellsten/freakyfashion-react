@@ -21,7 +21,7 @@ router.get("/", (req, res, next) => {
       publicationDate,
       isNew,
       isFavourite,
-      category
+      category_id
       FROM products
     `;
     const rows = db.prepare(sql).all();
@@ -47,7 +47,7 @@ router.get("/products", (req, res, next) => {
      publicationDate,
      isNew,
      isFavourite,
-     category
+     category_id
       FROM products
     `;
     const rows = db.prepare(sql).all();
@@ -77,17 +77,17 @@ router.post("/products/new", (req, res) => {
       publicationDate: String(publicationDate),
       isNew: Number(isNew),
       isFavourite: 0,
-      category: String(req.body.category),
+      category_id: Number(req.body.category_id),
     };
 
     const sql = `
       INSERT INTO products (
         sku, name, price, brand, description, image, slug, 
-        registrationDate, publicationDate, isNew, isFavourite, category
+        registrationDate, publicationDate, isNew, isFavourite, category_id
       )
       VALUES (
         @sku, @name, @price, @brand, @description, @image, @slug, 
-        @registrationDate, @publicationDate, @isNew, @isFavourite, @category
+        @registrationDate, @publicationDate, @isNew, @isFavourite, @category_id
       );
     `;
     db.prepare(sql).run(product);
