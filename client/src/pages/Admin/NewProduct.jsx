@@ -7,10 +7,12 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent } from "@/components/ui/card";
+import { useAuth } from "@/contexts/UserAuthContext";
 
 const API_URL = "http://localhost:8000";
 
 function NewProduct() {
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
 
@@ -24,7 +26,35 @@ function NewProduct() {
     fetch("http://localhost:8000/api/categories")
       .then((res) => res.json())
       .then((data) => setCategories(data));
-  }, []);
+
+    // Om användaren inte är inloggad, navigera till inloggningssidan
+    if (user == null || !user) {
+      const timer = setTimeout(() => navigate("/login"), 3000);
+      return () => clearTimeout(timer);
+    }
+    // Om användaren inte är inloggad, navigera till inloggningssidan
+    if (!user) {
+      const timer = setTimeout(() => navigate("/login"), 3000);
+      return () => clearTimeout(timer);
+    }
+    // Om användaren är inloggad men inte admin, navigera till startsidan
+    else if (user && !user.isAdmin) {
+      navigate("/");
+    }
+  }, [user, navigate]);
+
+  if (!user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-lg text-center flex flex-col justify-center">
+          <span>
+            Du måste vara administratör för att komma åt administrationssidan.
+          </span>
+          <span>Omdirigerar till inloggningssidan..</span>
+        </div>
+      </div>
+    );
+  }
 
   const [formData, setFormData] = useState({
     name: "",
