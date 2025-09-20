@@ -91,9 +91,15 @@ const ProductPage = ({ setProduct }) => {
         <div className="flex flex-col md:flex-row">
           <div className="md:w-1/2 lg:w-1/3 p-4">
             <img
-              src={`/images/${product.image}`}
+              src={
+                product.image.startsWith("http")
+                  ? product.image
+                  : product.image.startsWith("/images/")
+                  ? `${API_URL}${product.image}`
+                  : `/images/${product.image}`
+              }
               alt={product.name}
-              className="w-full h-auto object-contain"
+              className="w-full md:h-110 g:h-120 object-cover transition-transform duration-300 group-hover:scale-105"
               loading="lazy"
             />
           </div>

@@ -63,7 +63,7 @@ function NewProduct() {
     sku: "",
     price: "",
     brand: "",
-    category: "",
+    category_id: "",
     publicationDate: "",
   });
 
@@ -75,28 +75,31 @@ function NewProduct() {
     }));
   };
 
-  const handleCategoryChange = (category) => {
-    setFormData((previousFormData) => ({
-      ...previousFormData,
-      category,
+  const handleCategoryChange = (categoryId) => {
+    setFormData((prev) => ({
+      ...prev,
+      category_id: String(categoryId),
     }));
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const productData = {
-      ...formData,
-      registrationDate: new Date().toISOString().split("T")[0],
-    };
+    const form = new FormData();
+    form.append("name", formData.name);
+    form.append("description", formData.description);
+    form.append("sku", formData.sku);
+    form.append("price", formData.price);
+    form.append("brand", formData.brand);
+    form.append("category_id", formData.category_id);
+    form.append("publicationDate", formData.publicationDate);
+    form.append("registrationDate", new Date().toISOString().split("T")[0]);
+    form.append("image", formData.image);
 
     try {
       const response = await fetch(`${API_URL}/admin/products/new`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(productData),
+        body: form,
       });
 
       if (!response.ok) {
@@ -170,10 +173,14 @@ function NewProduct() {
                     <Input
                       id="image"
                       name="image"
-                      type="url"
-                      placeholder="Ange URL"
-                      value={formData.image}
-                      onChange={handleInputChange}
+                      type="file"
+                      accept="image/*"
+                      onChange={(event) =>
+                        setFormData((previous) => ({
+                          ...previous,
+                          image: event.target.files[0], // Sparar filen som objekt
+                        }))
+                      }
                       required
                     />
                   </div>
@@ -257,10 +264,7 @@ function NewProduct() {
                           id={category.id}
                           checked={formData.category_id === String(category.id)}
                           onCheckedChange={() =>
-                            setFormData((prev) => ({
-                              ...prev,
-                              category_id: String(category.id),
-                            }))
+                            handleCategoryChange(category.id)
                           }
                         />
                         <Label htmlFor={category.id} className="capitalize">

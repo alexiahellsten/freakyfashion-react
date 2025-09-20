@@ -1,8 +1,23 @@
 import express from "express";
 import db from "../../db/db.js";
 import generateSlug from "../../db/utilities/generate-slug.js";
+import multer from "multer";
+import path from "path";
 
 const router = express.Router();
+
+// Använder multer för att hantera filuppladdningar
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(process.cwd(), "public/images/products"));
+  },
+  filename: function (req, file, cb) {
+    // Använder Date.now() för att skapa ett unikt filnamn
+    const ext = path.extname(file.originalname);
+    cb(null, Date.now() + ext);
+  },
+});
+const upload = multer({ storage });
 
 // GET /admin
 router.get("/", (req, res, next) => {
@@ -58,12 +73,18 @@ router.get("/products", (req, res, next) => {
 });
 
 // POST /admin/products/new
-router.post("/products/new", (req, res) => {
+router.post("/products/new", upload.single("image"), (req, res) => {
   try {
     const slug = generateSlug(req.body.name);
     const registrationDate = new Date().toISOString().split("T")[0];
     const publicationDate = req.body.publicationDate || registrationDate;
     const isNew = 1;
+
+    // Hämtar bildens URL om en fil har laddats upp
+    let imageUrl = "";
+    if (req.file) {
+      imageUrl = `/images/products/${req.file.filename}`;
+    }
 
     const product = {
       sku: String(req.body.sku),
@@ -71,7 +92,7 @@ router.post("/products/new", (req, res) => {
       price: Number(req.body.price),
       brand: "Freaky",
       description: String(req.body.description),
-      image: String(req.body.image),
+      image: imageUrl,
       slug: String(slug),
       registrationDate: String(registrationDate),
       publicationDate: String(publicationDate),

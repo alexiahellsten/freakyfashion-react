@@ -7,14 +7,16 @@ function ProductGrid({ products, onFavoritesChange }) {
   const { user } = useAuth();
   const [favoriteProduct, setFavoriteProduct] = useState([]);
 
+  const API_URL = "http://localhost:8000";
+
   // Hämtar favoriter från backend-apiet eller sessionStorage (utloggad/gäst)
   const fetchFavorites = () => {
     if (user) {
-      fetch("http://localhost:8000/api/favorites", {
+      fetch(`${API_URL}/api/favorites`, {
         credentials: "include",
       })
         .then((res) => res.json())
-        .then((data) => setFavoriteProduct(data.map(p => p.id)))
+        .then((data) => setFavoriteProduct(data.map((p) => p.id)))
         .catch(() => setFavoriteProduct([]));
     } else {
       const favorites = JSON.parse(sessionStorage.getItem("favorites") || "[]");
@@ -32,7 +34,7 @@ function ProductGrid({ products, onFavoritesChange }) {
     if (isFavorite) {
       // Ta bort från favoriter
       if (user) {
-        fetch(`http://localhost:8000/api/favorites/${product.id}`, {
+        fetch(`${API_URL}/api/favorites/${product.id}`, {
           method: "DELETE",
           credentials: "include",
         })
@@ -44,7 +46,7 @@ function ProductGrid({ products, onFavoritesChange }) {
           .catch((err) => console.error("Kunde inte ta bort favorit:", err));
       } else {
         let favorites = JSON.parse(sessionStorage.getItem("favorites") || "[]");
-        favorites = favorites.filter(id => id !== product.id);
+        favorites = favorites.filter((id) => id !== product.id);
         sessionStorage.setItem("favorites", JSON.stringify(favorites));
         setFavoriteProduct(favorites);
         if (onFavoritesChange) onFavoritesChange();
@@ -52,7 +54,7 @@ function ProductGrid({ products, onFavoritesChange }) {
     } else {
       // Lägg till i favoriter
       if (user) {
-        fetch("http://localhost:8000/api/favorites", {
+        fetch(`${API_URL}/api/favorites`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -93,7 +95,13 @@ function ProductGrid({ products, onFavoritesChange }) {
             <a href={`/products/${product.slug}`} className="flex flex-col">
               <div className="image-container w-full h-auto relative">
                 <img
-                  src={`/images/${product.image}`}
+                  src={
+                    product.image.startsWith("http")
+                      ? product.image
+                      : product.image.startsWith("/images/")
+                      ? `${API_URL}${product.image}`
+                      : `/images/${product.image}`
+                  }
                   alt={product.name}
                   className="w-full md:h-110 g:h-120 object-cover transition-transform duration-300 group-hover:scale-105"
                 />

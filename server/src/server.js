@@ -1,3 +1,4 @@
+import path from "path";
 import dotenv from "dotenv";
 import express from "express";
 import session from "express-session";
@@ -49,7 +50,8 @@ app.use(
 
 // Middleware
 app.use(express.json());
-app.use(express.static(join(__dirname, "public")));
+app.use(express.static(path.join(process.cwd(), "public")));
+// app.use(express.static(join(__dirname, "public")));
 
 app.use("/api/user", userRouter);
 app.use("/api/products", productsRouter);
