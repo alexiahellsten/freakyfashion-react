@@ -181,3 +181,11 @@ FOR EACH ROW
 BEGIN
   UPDATE basket SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
 END;
+
+-- Lägger till slug-kolumnen i kategoritabellen
+ALTER TABLE categories ADD COLUMN slug TEXT;
+
+-- Uppdaterar slug-kolumnen med URL-vänliga versioner av kategorinamn
+UPDATE categories SET slug = 'klader' WHERE name = 'Kläder';
+UPDATE categories SET slug = 'accessoarer' WHERE name = 'Accessoarer';
+UPDATE categories SET slug = 'vaskor' WHERE name = 'Väskor';

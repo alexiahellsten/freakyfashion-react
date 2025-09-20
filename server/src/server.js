@@ -18,6 +18,8 @@ import userRouter from "./routes/user/existing-user.js";
 import registerRouter from "./routes/user/register-user.js";
 import newProductsRouter from "./routes/new-products.js";
 import ordersRouter from "./routes/orders.js";
+import categoriesRouter from "./routes/categories.js";
+
 
 const port = process.env.PORT || 8000;
 
@@ -57,6 +59,7 @@ app.use("/api/basket", basketRouter);
 app.use("/api/new", newProductsRouter);
 app.use("/api/register", registerRouter);
 app.use("/api/orders", ordersRouter);
+app.use("/api/categories", categoriesRouter);
 
 app.get("/", (req, res) => {
   res.send("Välkommen till Freaky Fashions API! Tillgängliga sökvägar: /api/products, /api/search, /admin, /api/favorites, /api/basket, /api/new, /api/register, /api/user");

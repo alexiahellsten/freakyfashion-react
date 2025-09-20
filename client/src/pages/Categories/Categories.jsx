@@ -13,7 +13,7 @@ function Categories() {
   const categoryNames = {
     klader: "Kläder",
     accessoarer: "Accessoarer",
-    vaskor: "Väskor"
+    skor: "Skor"
   };
 
   // Mappar slugs till kategoriernas namn
