@@ -15,6 +15,7 @@ import New from "./pages/New/New";
 import Login from "./pages/Login/Login";
 import Profile from "./pages/Login/Profile";
 import Register from "./pages/Register/Register";
+import Categories from "./pages/Categories/Categories";
 
 function App() {
 
@@ -35,6 +36,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/categories/:slug" element={<Categories />} />
         </Routes>
       </BasketProvider>
     </AuthProvider>
