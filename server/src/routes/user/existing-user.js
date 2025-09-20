@@ -2,7 +2,7 @@ import express from "express";
 const router = express.Router();
 import db from "../../../db/db.js";
 
-// GET /api/user - Check authentication status
+// GET /api/user - Kontrollerar om användaren är inloggad
 router.get("/", function (req, res, next) {
   try {
     //Sparar informationen om inloggning i sessionen
