@@ -184,6 +184,7 @@ END;
 
 -- Lägger till slug-kolumnen i kategoritabellen
 ALTER TABLE categories ADD COLUMN slug TEXT;
+ALTER TABLE categories ADD COLUMN image TEXT;
 
 -- Uppdaterar slug-kolumnen med URL-vänliga versioner av kategorinamn
 UPDATE categories SET slug = 'klader' WHERE name = 'Kläder';

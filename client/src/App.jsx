@@ -16,14 +16,15 @@ import Login from "./pages/Login/Login";
 import Profile from "./pages/Login/Profile";
 import Register from "./pages/Register/Register";
 import Categories from "./pages/Categories/Categories";
+import AdminCategories from "./pages/Admin/Categories";
+import NewCategory from "./pages/Admin/NewCategory";
 
 function App() {
-
   return (
     <AuthProvider>
       <BasketProvider>
         <Routes>
-          <Route path="/" element={<Home/>} />
+          <Route path="/" element={<Home />} />
           <Route path="/products/:slug" element={<ProductDetails />} />
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/new" element={<New />} />
@@ -37,6 +38,8 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/register" element={<Register />} />
           <Route path="/categories/:slug" element={<Categories />} />
+          <Route path="/admin/categories" element={<AdminCategories />} />
+          <Route path="/admin/categories/new" element={<NewCategory />} />
         </Routes>
       </BasketProvider>
     </AuthProvider>

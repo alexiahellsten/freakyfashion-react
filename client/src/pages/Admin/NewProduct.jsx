@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import Header from "../../components/Admin/Header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -119,7 +119,14 @@ function NewProduct() {
       <Header />
       <div className="flex flex-col lg:flex-row lg:justify-start lg:items-start lg:gap-12">
         <aside className="invisible sm:visible text-black bg-gray-200 border w-full lg:w-48 sm:h-screen flex justify-center p-4">
-          <h3 className="text-lg font-semibold">Produkter</h3>
+          <nav className="flex flex-col gap-4">
+            <Link to="/admin" className="text-lg font-semibold">
+              Produkter
+            </Link>
+            <Link to="/admin/categories" className="text-lg font-semibold">
+              Kategorier
+            </Link>
+          </nav>
         </aside>
 
         <article className="flex justify-start w-full lg:w-3/4 p-4 bg-white">

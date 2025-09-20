@@ -133,4 +133,60 @@ router.delete("/products/:slug", (req, res) => {
   }
 });
 
+// GET /admin/categories
+router.get("/categories", (req, res, next) => {
+  try {
+    const sql = `
+       SELECT 
+       id,
+       name,
+       description
+       FROM categories
+    `;
+    const rows = db.prepare(sql).all();
+    res.json({ categories: rows });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// DELETE /admin/categories/:slug
+router.delete("/categories/:slug", (req, res) => {
+  try {
+    const sql = `DELETE FROM categories WHERE slug = ?`;
+    db.prepare(sql).run(req.params.slug);
+    res.status(200).json({ message: "Kategori raderad" });
+  } catch (error) {
+    console.error("Fel vid radering av kategori:", error);
+    res.status(500).json({ error: "Kunde inte radera kategorin" });
+  }
+});
+
+// POST /admin/categories/new
+router.post("/categories/new", upload.single("image"), (req, res, next) => {
+  try {
+    const { name } = req.body;
+    const slug = generateSlug(name);
+
+    // hämta bildens URL om en fil har laddats upp
+    let imageUrl = "";
+    if (req.file) {
+      imageUrl = `/images/products/${req.file.filename}`;
+    }
+
+    const sql = `
+       INSERT INTO categories (name, slug, image)
+       VALUES (?, ?, ?)
+    `;
+    db.prepare(sql).run(name, slug, imageUrl);
+    res.status(201).json({
+      message: "Kategori tillagd",
+      category: { name, slug, image: imageUrl },
+    });
+  } catch (error) {
+    console.error("Fel vid registrering av kategori:", error.message);
+    res.status(500).json({ error: "Kunde inte lägga till kategorin" });
+  }
+});
+
 export default router;

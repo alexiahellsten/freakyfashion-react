@@ -3,8 +3,8 @@ import { Link, useNavigate } from "react-router";
 import { useAuth } from "@/contexts/UserAuthContext";
 
 import Header from "../../components/Admin/Header";
-import ProductTable from "../../components/Admin/ProductTable";
 import { Button } from "@/components/ui/button";
+import CategoriesTable from "../../components/Admin/CategoriesTable";
 
 import {
   DropdownMenu,
@@ -18,70 +18,65 @@ import {
 
 const API_URL = "http://localhost:8000";
 
-function Admin() {
+function AdminCategories() {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
+
+  const displayName = (slug) => {
+    if (slug === "klader") return "Kläder";
+    if (slug === "skor") return "Skor";
+    if (slug === "accessoarer") return "Accessoarer";
+    return slug.charAt(0).toUpperCase() + slug.slice(1);
+  };
+
+  const fetchCategories = () => {
+    fetch(`${API_URL}/api/categories`)
+      .then((response) => response.json())
+      .then((data) => {
+        setCategories(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Fel vid hämtning av kategorier:", error);
+        setLoading(false);
+      });
+  };
 
   useEffect(() => {
     document.title = "Administration";
 
+    // Om användaren inte är inloggad, navigera till inloggningssidan
     if (user == null || !user) {
       const timer = setTimeout(() => navigate("/login"), 3000);
       return () => clearTimeout(timer);
-    } else if (user && !user.isAdmin) {
+    }
+    // Om användaren inte är inloggad, navigera till inloggningssidan
+    if (!user) {
+      const timer = setTimeout(() => navigate("/login"), 3000);
+      return () => clearTimeout(timer);
+    }
+    // Om användaren är inloggad men inte admin, navigera till startsidan
+    else if (user && !user.isAdmin) {
       navigate("/");
     }
   }, [user, navigate]);
 
   useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  const fetchProducts = () => {
-    fetch(`${API_URL}/admin/products`)
+    fetch(`${API_URL}/api/categories`)
       .then((response) => response.json())
       .then((data) => {
-        setProducts(data.products || []);
+        setCategories(data);
         setLoading(false);
       })
       .catch((error) => {
-        console.error("Fel vid hämtning av produkter:", error);
+        console.error("Fel vid hämtning av kategorier:", error);
         setLoading(false);
       });
-  };
-
-  const handleDelete = async (slug, productName) => {
-    if (
-      !window.confirm(
-        `Är du säker på att du vill radera produkten: ${productName}?`
-      )
-    ) {
-      return;
-    }
-
-    try {
-      const response = await fetch(`${API_URL}/admin/products/${slug}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        throw new Error("Kunde inte radera produkten");
-      }
-      fetchProducts();
-    } catch (error) {
-      console.error("Fel vid radering av produkt:", error);
-      alert("Kunde inte radera produkten");
-    }
-  };
-
-  const filteredProducts = products.filter((product) => {
-    if (filter === "all") return true;
-    return product.category === filter;
-  });
+  }, []);
 
   if (!user) {
     return (
@@ -95,6 +90,34 @@ function Admin() {
       </div>
     );
   }
+  const handleDelete = async (slug, categoryName) => {
+    if (
+      !window.confirm(
+        `Är du säker på att du vill radera kategorin: ${categoryName}?`
+      )
+    ) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_URL}/admin/categories/${slug}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Kunde inte radera kategorin");
+      }
+      fetchCategories();
+    } catch (error) {
+      console.error("Fel vid radering av kategori:", error);
+      alert("Kunde inte radera kategorin");
+    }
+  };
+
+  const filteredCategories = categories.filter((category) => {
+    if (filter === "all") return true;
+    return category.slug === filter;
+  });
 
   return (
     <>
@@ -114,16 +137,16 @@ function Admin() {
         <section className="w-full lg:w-3/4 p-4 bg-white">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-center sm:text-left text-xl font-semibold mb-4 mt-4">
-              Produkter
+              Kategorier
             </h2>
 
             <div className="flex gap-2">
-              <Button onClick={() => navigate("/admin/products/new")}>
-                Ny produkt
+              <Button onClick={() => navigate("/admin/categories/new")}>
+                Ny kategori
               </Button>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline">Filtrera produkter</Button>
+                  <Button variant="outline">Filtrera kategorier</Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-44">
                   <DropdownMenuLabel>Välj filtrering</DropdownMenuLabel>
@@ -135,18 +158,13 @@ function Admin() {
                     <DropdownMenuRadioItem value="all">
                       Alla
                     </DropdownMenuRadioItem>
-                    <DropdownMenuRadioItem value="skor">
-                      Skor
-                    </DropdownMenuRadioItem>
-                    <DropdownMenuRadioItem value="kläder">
-                      Kläder
-                    </DropdownMenuRadioItem>
-                    <DropdownMenuRadioItem value="accessoarer">
-                      Accessoarer
-                    </DropdownMenuRadioItem>
-                    <DropdownMenuRadioItem value="väskor">
-                      Väskor
-                    </DropdownMenuRadioItem>
+                    {Array.from(new Set(categories.map((cat) => cat.slug))).map(
+                      (slug) => (
+                        <DropdownMenuRadioItem key={slug} value={slug}>
+                          {displayName(slug)}
+                        </DropdownMenuRadioItem>
+                      )
+                    )}
                   </DropdownMenuRadioGroup>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -156,7 +174,13 @@ function Admin() {
           {loading ? (
             <p>Laddar..</p>
           ) : (
-            <ProductTable products={filteredProducts} onDelete={handleDelete} />
+            <CategoriesTable
+              categories={filteredCategories.map((cat) => ({
+                ...cat,
+                name: displayName(cat.slug),
+              }))}
+              onDelete={handleDelete}
+            />
           )}
         </section>
       </div>
@@ -164,4 +188,4 @@ function Admin() {
   );
 }
 
-export default Admin;
+export default AdminCategories;
