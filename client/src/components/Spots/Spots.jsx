@@ -1,24 +1,29 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router";
 
 function Spots() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedSpot, setSelectedSpot] = useState(null);
+  const navigate = useNavigate();
 
   const spotData = [
-    { id: 1, name: "Kläder", image: "/images/acid-skjortor.jpg" },
-    { id: 2, name: "Skor", image: "/images/svarta-kängor.jpg" },
-    { id: 3, name: "Accessoarer", image: "/images/vita-solglasögon.jpg" },
+    {
+      id: 1,
+      name: "Kläder",
+      image: "/images/acid-skjortor.jpg",
+      link: "/categories/klader",
+    },
+    {
+      id: 2,
+      name: "Skor",
+      image: "/images/svarta-kängor.jpg",
+      link: "/categories/skor",
+    },
+    {
+      id: 3,
+      name: "Accessoarer",
+      image: "/images/vita-solglasögon.jpg",
+      link: "/categories/accessoarer",
+    },
   ];
-
-  const openModal = (spot) => {
-    setSelectedSpot(spot);
-    setIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsOpen(false);
-    setSelectedSpot(null);
-  };
 
   return (
     <div className="hidden lg:block p-4 spots-container mx-2.5 w-full justify-center items-center">
@@ -27,7 +32,7 @@ function Spots() {
           <div
             key={spot.id}
             className="relative group overflow-hidden cursor-pointer"
-            onClick={() => openModal(spot)}
+            onClick={() => navigate(spot.link)}
           >
             <img
               src={spot.image}
@@ -40,25 +45,6 @@ function Spots() {
           </div>
         ))}
       </div>
-
-      {isOpen && selectedSpot && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-10">
-          <div className="bg-white p-6 rounded-lg">
-            <h2 className="text-2xl font-bold mb-4">{selectedSpot.name}</h2>
-            <img
-              src={selectedSpot.image}
-              alt={selectedSpot.name}
-              className="w-80 h-auto mb-4"
-            />
-            <button
-              onClick={closeModal}
-              className="bg-red-500 text-white p-2 rounded"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
