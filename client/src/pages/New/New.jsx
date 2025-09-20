@@ -15,8 +15,7 @@ function New() {
     fetch(`${API_URL}/api/new`)
       .then((response) => response.json())
       .then((data) => {
-
-      // Filtrerar nya produkter som publicerats inom de senaste 7 dagarna
+        // Filtrerar nya produkter som publicerats inom de senaste 7 dagarna
         const today = new Date();
         const sevenDaysAgo = new Date();
         sevenDaysAgo.setDate(today.getDate() - 7);
@@ -25,12 +24,15 @@ function New() {
         const filteredNewProducts = data
           .filter((product) => {
             const publicationDate = new Date(product.publicationDate);
-            
-            console.log(`Product: ${product.name}, publicationDate: ${product.publicationDate}, isNew: ${product.isNew}`);
-            
-            const isWithinRange = publicationDate >= sevenDaysAgo && publicationDate <= today;
+
+            console.log(
+              `Product: ${product.name}, publicationDate: ${product.publicationDate}, isNew: ${product.isNew}`
+            );
+
+            const isWithinRange =
+              publicationDate >= sevenDaysAgo && publicationDate <= today;
             const isNewProduct = product.isNew === 1;
-            
+
             return isWithinRange && isNewProduct;
           })
           .sort((a, b) => {
@@ -43,10 +45,10 @@ function New() {
             ...product,
 
             // Alla produkter på sidan är nya, så ingen badge behövs
-            showNewBadge: false 
+            showNewBadge: false,
           }));
         setNewProducts(filteredNewProducts);
-        
+
         setLoading(false);
       })
       .catch((error) => {
@@ -68,7 +70,7 @@ function New() {
       <header>
         <Navbar />
       </header>
-      
+
       <main className="container mx-auto px-4 py-8">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold mb-4">Nyheter</h1>
@@ -76,10 +78,11 @@ function New() {
             Upptäck våra senaste produkter från de senaste 7 dagarna
           </p>
           <div className="text-lg font-semibold">
-            {newProducts.length > 0 
-              ? `${newProducts.length} ny${newProducts.length !== 1 ? 'a' : ''} produkt${newProducts.length !== 1 ? 'er' : ''}`
-              : 'Inga nya produkter just nu'
-            }
+            {newProducts.length > 0
+              ? `${newProducts.length} ny${
+                  newProducts.length !== 1 ? "a" : ""
+                } produkt${newProducts.length !== 1 ? "er" : ""}`
+              : "Inga nya produkter just nu"}
           </div>
         </div>
 
@@ -89,7 +92,8 @@ function New() {
           <div className="text-center py-12">
             <h2 className="text-xl font-semibold mb-4">Inga nya produkter</h2>
             <p className="text-gray-600">
-              Det finns inga nya produkter från de senaste 7 dagarna. Kom tillbaka snart för att se våra senaste nyheter!
+              Det finns inga nya produkter från de senaste 7 dagarna. Kom
+              tillbaka snart för att se våra senaste nyheter!
             </p>
           </div>
         )}

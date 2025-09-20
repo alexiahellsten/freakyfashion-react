@@ -13,16 +13,19 @@ function requireLogin(req, res, next) {
 // GET /api/favorites
 router.get("/", requireLogin, (req, res) => {
   const userId = req.session.userId;
-  
+
   try {
-    const rows = db.prepare(`
+    const rows = db
+      .prepare(
+        `
       SELECT product.*
       FROM favorites favorite
       JOIN products product ON product.id = favorite.product_id
       WHERE favorite.user_id = ?
-    `).all(userId);
+    `
+      )
+      .all(userId);
     res.json(rows);
-
   } catch (error) {
     res.status(500).json({ message: "Kunde inte hämta favoriter" });
   }
@@ -38,9 +41,10 @@ router.post("/", requireLogin, (req, res, next) => {
   }
 
   try {
-    db.prepare(
-      "INSERT INTO favorites (user_id, product_id) VALUES (?, ?)"
-    ).run(userId, productId);
+    db.prepare("INSERT INTO favorites (user_id, product_id) VALUES (?, ?)").run(
+      userId,
+      productId
+    );
 
     res.json({ success: true, message: "Favorit sparad" });
   } catch (error) {
@@ -67,7 +71,5 @@ router.delete("/:productId", requireLogin, (req, res) => {
     res.status(500).json({ message: "Fel vid borttagning av favorit" });
   }
 });
-
-
 
 export default router;

@@ -61,7 +61,7 @@ router.get("/products", (req, res, next) => {
 router.post("/products/new", (req, res) => {
   try {
     const slug = generateSlug(req.body.name);
-    const registrationDate = new Date().toISOString().split('T')[0]; 
+    const registrationDate = new Date().toISOString().split("T")[0];
     const publicationDate = req.body.publicationDate || registrationDate;
     const isNew = 1;
 
@@ -74,10 +74,10 @@ router.post("/products/new", (req, res) => {
       image: String(req.body.image),
       slug: String(slug),
       registrationDate: String(registrationDate),
-      publicationDate: String(publicationDate), 
+      publicationDate: String(publicationDate),
       isNew: Number(isNew),
       isFavourite: 0,
-      category: String(req.body.category)
+      category: String(req.body.category),
     };
 
     const sql = `
@@ -94,13 +94,11 @@ router.post("/products/new", (req, res) => {
 
     console.log("Ny produkt registrerad:", product);
     res.status(201).json({ message: "Produkt tillagd", product });
-
   } catch (error) {
     console.error("Fel vid registrering av produkt:", error.message);
     res.status(500).json({ error: "Kunde inte lägga till produkten" });
   }
 });
-
 
 // DELETE /admin/products/:slug
 router.delete("/products/:slug", (req, res) => {

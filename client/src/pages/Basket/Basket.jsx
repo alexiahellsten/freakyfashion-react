@@ -29,7 +29,8 @@ function Basket() {
   const navigate = useNavigate();
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const { basket, removeFromBasket, updateQuantity, loading } = useBasketOperations();
+  const { basket, removeFromBasket, updateQuantity, loading } =
+    useBasketOperations();
   const { syncBasketToBackend } = useBasket();
 
   const handleSearch = (query) => {
@@ -210,7 +211,10 @@ function Basket() {
 
           <div className="flex justify-center m-5">
             <Button
-              onClick={async () => { await syncBasketToBackend(); navigate("/checkout"); }}
+              onClick={async () => {
+                await syncBasketToBackend();
+                navigate("/checkout");
+              }}
               className="p-4 m-2 w-1/4 text-lg sm:text-base sm:w-1/4 lg:1/3"
             >
               Till kassan

@@ -5,24 +5,30 @@ import db from "../../db/db.js";
 // Hämtar inloggad användare eller en gästanvändare
 function getUserId(req) {
   const guestEmail = "guest@freakyfashion.se";
-  
+
   if (req.session && req.session.userId) {
     return req.session.userId;
   }
-  
-  const existingGuest = db.prepare("SELECT id FROM users WHERE email = ?").get(guestEmail);
+
+  const existingGuest = db
+    .prepare("SELECT id FROM users WHERE email = ?")
+    .get(guestEmail);
 
   if (existingGuest) return existingGuest.id;
-  const result = db.prepare("INSERT INTO users (email, password) VALUES (?, ?)").run(guestEmail, "guest");
+  const result = db
+    .prepare("INSERT INTO users (email, password) VALUES (?, ?)")
+    .run(guestEmail, "guest");
   return result.lastInsertRowid;
 }
 
 // GET /api/basket
 router.get("/", (req, res) => {
   const userId = getUserId(req);
-  
+
   try {
-    const rows = db.prepare(`
+    const rows = db
+      .prepare(
+        `
       SELECT 
         basket.id as basket_id,
         basket.quantity,
@@ -38,8 +44,10 @@ router.get("/", (req, res) => {
       JOIN products product ON product.id = basket.product_id
       WHERE basket.user_id = ?
       ORDER BY basket.created_at DESC
-    `).all(userId);
-    
+    `
+      )
+      .all(userId);
+
     res.json(rows);
   } catch (error) {
     console.error("Error fetching basket:", error);
@@ -62,15 +70,19 @@ router.post("/", (req, res) => {
 
   try {
     // Kontrollerar att produkten existerar
-    const product = db.prepare("SELECT id FROM products WHERE id = ?").get(productId);
+    const product = db
+      .prepare("SELECT id FROM products WHERE id = ?")
+      .get(productId);
     if (!product) {
       return res.status(404).json({ message: "Produkt hittades inte" });
     }
 
     // Kontrollerar om produkten redan är tillagd i varukorgen
-    const existingItem = db.prepare(
-      "SELECT id, quantity FROM basket WHERE user_id = ? AND product_id = ?"
-    ).get(userId, productId);
+    const existingItem = db
+      .prepare(
+        "SELECT id, quantity FROM basket WHERE user_id = ? AND product_id = ?"
+      )
+      .get(userId, productId);
 
     if (existingItem) {
       // Om produkten redan existerar i varukorgen - uppdatera kvaniteten
@@ -78,24 +90,26 @@ router.post("/", (req, res) => {
       db.prepare(
         "UPDATE basket SET quantity = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?"
       ).run(newQuantity, existingItem.id);
-      
-      res.json({ 
-        success: true, 
+
+      res.json({
+        success: true,
         message: "Antal uppdaterat i varukorg",
         action: "updated",
-        quantity: newQuantity
+        quantity: newQuantity,
       });
     } else {
       // Lägg till produkten i varukorgen
-      const result = db.prepare(
-        "INSERT INTO basket (user_id, product_id, quantity) VALUES (?, ?, ?)"
-      ).run(userId, productId, quantity);
-      
-      res.json({ 
-        success: true, 
+      const result = db
+        .prepare(
+          "INSERT INTO basket (user_id, product_id, quantity) VALUES (?, ?, ?)"
+        )
+        .run(userId, productId, quantity);
+
+      res.json({
+        success: true,
         message: "Produkt tillagd i varukorg",
         action: "added",
-        basketId: result.lastInsertRowid
+        basketId: result.lastInsertRowid,
       });
     }
   } catch (error) {
@@ -115,20 +129,23 @@ router.put("/:basketId", (req, res) => {
   }
 
   try {
-    const result = db.prepare(
-      "UPDATE basket SET quantity = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ? AND user_id = ?"
-    ).run(quantity, basketId, userId);
+    const result = db
+      .prepare(
+        "UPDATE basket SET quantity = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ? AND user_id = ?"
+      )
+      .run(quantity, basketId, userId);
 
     if (result.changes === 0) {
-      return res.status(404).json({ message: "Varukorgsprodukt hittades inte" });
+      return res
+        .status(404)
+        .json({ message: "Varukorgsprodukt hittades inte" });
     }
 
-    res.json({ 
-      success: true, 
+    res.json({
+      success: true,
       message: "Antal uppdaterat",
-      quantity: quantity
+      quantity: quantity,
     });
-
   } catch (error) {
     console.error("Error updating basket item:", error);
     res.status(500).json({ message: "Fel vid uppdatering av varukorg" });
@@ -141,12 +158,14 @@ router.delete("/:basketId", (req, res) => {
   const userId = getUserId(req);
 
   try {
-    const result = db.prepare(
-      "DELETE FROM basket WHERE id = ? AND user_id = ?"
-    ).run(basketId, userId);
+    const result = db
+      .prepare("DELETE FROM basket WHERE id = ? AND user_id = ?")
+      .run(basketId, userId);
 
     if (result.changes === 0) {
-      return res.status(404).json({ message: "Varukorgsprodukt hittades inte" });
+      return res
+        .status(404)
+        .json({ message: "Varukorgsprodukt hittades inte" });
     }
 
     res.json({ success: true, message: "Produkt borttagen från varukorg" });

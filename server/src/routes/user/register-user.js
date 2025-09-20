@@ -7,14 +7,21 @@ router.post("/", (req, res, next) => {
   const { email, password } = req.body;
 
   try {
-    const existingUser = db.prepare("SELECT * FROM users WHERE email = ?").get(email);
+    const existingUser = db
+      .prepare("SELECT * FROM users WHERE email = ?")
+      .get(email);
     if (existingUser) {
-      return res.status(400).json({ 
-        message: "Användaren finns redan" });
+      return res.status(400).json({
+        message: "Användaren finns redan",
+      });
     }
-    
-    const result = db.prepare("INSERT INTO users (email, password) VALUES (?, ?)").run(email, password);
-    const newUser = db.prepare("SELECT * FROM users WHERE id = ?").get(result.lastInsertRowid);
+
+    const result = db
+      .prepare("INSERT INTO users (email, password) VALUES (?, ?)")
+      .run(email, password);
+    const newUser = db
+      .prepare("SELECT * FROM users WHERE id = ?")
+      .get(result.lastInsertRowid);
 
     console.log("Hämtade ny användare:", newUser);
 
@@ -22,19 +29,18 @@ router.post("/", (req, res, next) => {
     req.session.userId = newUser.id;
     req.session.email = newUser.email;
     req.session.isAdmin = newUser.isAdmin;
-    
 
-    res.status(201).json({ 
+    res.status(201).json({
       message: "Registreringen lyckades",
-       user: { 
-        id: newUser.id, 
+      user: {
+        id: newUser.id,
         email: newUser.email,
-        isAdmin: newUser.isAdmin 
-      } });
+        isAdmin: newUser.isAdmin,
+      },
+    });
 
     console.log("Registrerar användare:", email);
     console.log("Användare skapad:", newUser);
-
   } catch (err) {
     next(err);
   }

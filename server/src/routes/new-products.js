@@ -10,10 +10,10 @@ router.get("/", function (req, res, next) {
   const today = new Date();
   const sevenDaysAgo = new Date();
   sevenDaysAgo.setDate(today.getDate() - 7);
-  
+
   //Formatterar datumen till YYYY-MM-DD
-  const todayStr = today.toISOString().split('T')[0];
-  const sevenDaysAgoStr = sevenDaysAgo.toISOString().split('T')[0];
+  const todayStr = today.toISOString().split("T")[0];
+  const sevenDaysAgoStr = sevenDaysAgo.toISOString().split("T")[0];
 
   let newProductsQuery = `
     SELECT id, sku, name, price, brand, description, image, slug,
@@ -38,7 +38,7 @@ router.get("/", function (req, res, next) {
     const rows = db.prepare(newProductsQuery).all(...params);
     res.json(rows);
   } catch (error) {
-    console.error('Database error:', error);
+    console.error("Database error:", error);
     next(error);
   }
 });

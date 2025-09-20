@@ -3,14 +3,14 @@ const router = express.Router();
 
 import db from "../../db/db.js";
 
-router.get('/', function(req, res, next) {
-    const search = req.query.q;
+router.get("/", function (req, res, next) {
+  const search = req.query.q;
 
-    let select;
-    let rows;
+  let select;
+  let rows;
 
-    if (search) {
-        select = db.prepare(`
+  if (search) {
+    select = db.prepare(`
       SELECT id,
              sku,
              name,
@@ -26,10 +26,9 @@ router.get('/', function(req, res, next) {
       WHERE name LIKE CONCAT ('%', ?, '%')
     `);
 
-        rows = select.all(search);
-
-    } else {
-        select = db.prepare(`
+    rows = select.all(search);
+  } else {
+    select = db.prepare(`
       SELECT id,
              sku,
              name,
@@ -44,23 +43,23 @@ router.get('/', function(req, res, next) {
       FROM products
     `);
 
-        rows = select.all();
-    }
+    rows = select.all();
+  }
 
-    res.render("search", {
-        title: 'Freaky Fashion',
-        products: rows
-    });
+  res.render("search", {
+    title: "Freaky Fashion",
+    products: rows,
+  });
 });
 
-router.get('/search', function(req, res, next) {
-    const search = req.query.q;
+router.get("/search", function (req, res, next) {
+  const search = req.query.q;
 
-    let select;
-    let rows;
+  let select;
+  let rows;
 
-    if (search && search.trim()) {
-        select = db.prepare(`
+  if (search && search.trim()) {
+    select = db.prepare(`
       SELECT id,
              sku,
              name,
@@ -76,10 +75,9 @@ router.get('/search', function(req, res, next) {
       WHERE name LIKE CONCAT ('%', ?, '%')
     `);
 
-        rows = select.all(search.trim());
-
-    } else {
-        select = db.prepare(`
+    rows = select.all(search.trim());
+  } else {
+    select = db.prepare(`
       SELECT id,
              sku,
              name,
@@ -94,13 +92,13 @@ router.get('/search', function(req, res, next) {
       FROM products
     `);
 
-        rows = select.all();
-    }
+    rows = select.all();
+  }
 
-    res.render("search", {
-        title: 'Freaky Fashion',
-        products: rows
-    });
+  res.render("search", {
+    title: "Freaky Fashion",
+    products: rows,
+  });
 });
 
 export default router;

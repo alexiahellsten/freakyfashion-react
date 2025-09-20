@@ -39,7 +39,6 @@ router.get("/", function (req, res, next) {
   }
 });
 
-
 // GET /api/products/:id (numeric)
 router.get("/:id(\\d+)", function (req, res) {
   const id = Number(req.params.id);
@@ -131,7 +130,7 @@ router.get("/:slug", function (req, res, next) {
 
     res.json({
       product: row,
-      slideshow: rows, 
+      slideshow: rows,
     });
   } catch (error) {
     res.status(500).send(error.message);

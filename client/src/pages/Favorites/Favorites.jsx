@@ -27,19 +27,20 @@ function Favorites() {
           setLoading(false);
         });
     } else {
-      const favoriteIds = JSON.parse(sessionStorage.getItem("favorites") || "[]");
+      const favoriteIds = JSON.parse(
+        sessionStorage.getItem("favorites") || "[]"
+      );
       if (favoriteIds.length > 0) {
         Promise.all(
-          favoriteIds.map(id =>
-            fetch(`${API_URL}/api/products/${id}`)
-              .then(res => res.json())
+          favoriteIds.map((id) =>
+            fetch(`${API_URL}/api/products/${id}`).then((res) => res.json())
           )
         )
-          .then(products => {
+          .then((products) => {
             setFavoriteProducts(products.filter(Boolean));
             setLoading(false);
           })
-          .catch(error => {
+          .catch((error) => {
             console.error("Fel vid hämtning av favoriter:", error);
             setLoading(false);
           });
@@ -69,7 +70,7 @@ function Favorites() {
         <CallToAction />
         <Navbar />
       </header>
-      
+
       <main className="container mx-auto px-4 py-8">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold mb-4">Mina favoriter</h1>
@@ -81,19 +82,26 @@ function Favorites() {
         {favoriteProducts.length > 0 ? (
           <>
             <div className="text-center text-lg font-semibold mb-8">
-              {`${favoriteProducts.length} ny${favoriteProducts.length !== 1 ? 'a' : ''} produkt${favoriteProducts.length !== 1 ? 'er' : ''}`}
+              {`${favoriteProducts.length} ny${
+                favoriteProducts.length !== 1 ? "a" : ""
+              } produkt${favoriteProducts.length !== 1 ? "er" : ""}`}
             </div>
-            <ProductGrid products={favoriteProducts} onFavoritesChange={fetchFavorites} />
+            <ProductGrid
+              products={favoriteProducts}
+              onFavoritesChange={fetchFavorites}
+            />
           </>
         ) : (
           <div className="text-center py-12">
-            <h2 className="text-xl font-semibold mb-4">Hoppsan! Du har inga favoritmarkerade produkter</h2>
+            <h2 className="text-xl font-semibold mb-4">
+              Hoppsan! Du har inga favoritmarkerade produkter
+            </h2>
             <p className="text-gray-600">
-              Du har inte lagt till några produkter som favoriter än. Gå till produktsidan för att lägga till dina favoriter.
+              Du har inte lagt till några produkter som favoriter än. Gå till
+              produktsidan för att lägga till dina favoriter.
             </p>
           </div>
         )}
-
       </main>
       <Footer />
     </>

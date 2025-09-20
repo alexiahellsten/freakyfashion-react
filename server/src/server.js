@@ -7,7 +7,7 @@ import { dirname, join } from "path";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-dotenv.config({ path: join(__dirname, "../../.env") }); 
+dotenv.config({ path: join(__dirname, "../../.env") });
 
 import productsRouter from "./routes/products.js";
 import searchRouter from "./routes/search.js";
@@ -20,16 +20,17 @@ import newProductsRouter from "./routes/new-products.js";
 import ordersRouter from "./routes/orders.js";
 import categoriesRouter from "./routes/categories.js";
 
-
 const port = process.env.PORT || 8000;
 
 const app = express();
 
 //Konfiguerar CORS för att tillåta cookies
-app.use(cors({
-  origin: "http://localhost:3000",
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 
 // Konfigurerar sessioner
 app.use(
@@ -47,7 +48,7 @@ app.use(
 );
 
 // Middleware
-app.use(express.json()); 
+app.use(express.json());
 app.use(express.static(join(__dirname, "public")));
 
 app.use("/api/user", userRouter);
@@ -62,7 +63,9 @@ app.use("/api/orders", ordersRouter);
 app.use("/api/categories", categoriesRouter);
 
 app.get("/", (req, res) => {
-  res.send("Välkommen till Freaky Fashions API! Tillgängliga sökvägar: /api/products, /api/search, /admin, /api/favorites, /api/basket, /api/new, /api/register, /api/user");
+  res.send(
+    "Välkommen till Freaky Fashions API! Tillgängliga sökvägar: /api/products, /api/search, /admin, /api/favorites, /api/basket, /api/new, /api/register, /api/user"
+  );
 });
 
 // Felhanterare
