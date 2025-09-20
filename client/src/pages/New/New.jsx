@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import ProductGrid from "../../components/ProductGrid/ProductGrid";
 import Footer from "../../components/Footer/Footer";
+import CallToAction from "../../components/CallToAction/CallToAction";
 
 const API_URL = "http://localhost:8000";
 
@@ -68,6 +69,7 @@ function New() {
   return (
     <>
       <header>
+        <CallToAction />
         <Navbar />
       </header>
 

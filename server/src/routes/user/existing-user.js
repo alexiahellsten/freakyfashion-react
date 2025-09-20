@@ -64,6 +64,8 @@ router.get("/status", (req, res) => {
       isLoggedIn: true,
       userId: req.session.userId,
       email: req.session.email,
+      // Sparar värdet som en boolean (sant/falskt) med !!
+      isAdmin: !!req.session.isAdmin,
     });
   } else {
     res.json({ isLoggedIn: false });

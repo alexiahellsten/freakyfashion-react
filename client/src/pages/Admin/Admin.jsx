@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
+import { useAuth } from "@/contexts/UserAuthContext";
 
 import Header from "../../components/Admin/Header";
 import ProductTable from "../../components/Admin/ProductTable";
@@ -18,14 +19,44 @@ import {
 const API_URL = "http://localhost:8000";
 
 function Admin() {
-  useEffect(() => {
-    document.title = "Administration";
-  }, []);
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
-  const navigate = useNavigate();
+
+  useEffect(() => {
+    document.title = "Administration";
+
+    // Om användaren inte är inloggad, navigera till inloggningssidan
+    if (user == null || !user) {
+      const timer = setTimeout(() => navigate("/login"), 3000);
+      return () => clearTimeout(timer);
+    }
+    // Om användaren inte är inloggad, navigera till inloggningssidan
+    if (!user) {
+      const timer = setTimeout(() => navigate("/login"), 3000);
+      return () => clearTimeout(timer);
+    }
+    // Om användaren är inloggad men inte admin, navigera till startsidan
+    else if (user && !user.isAdmin) {
+      navigate("/");
+    }
+  }, [user, navigate]);
+
+  if (!user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-lg text-center flex flex-col justify-center">
+          <span>
+            Du måste vara administratör för att komma åt administrationssidan.
+          </span>
+          <span>Omdirigerar till inloggningssidan..</span>
+        </div>
+      </div>
+    );
+  }
 
   const fetchProducts = () => {
     fetch(`${API_URL}/admin/products`)

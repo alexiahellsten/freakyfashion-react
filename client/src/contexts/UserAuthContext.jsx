@@ -13,7 +13,11 @@ export function AuthProvider({ children }) {
       .then((res) => res.json())
       .then((data) => {
         if (data.isLoggedIn) {
-          setUser({ id: data.userId, email: data.email });
+          setUser({
+            id: data.userId,
+            email: data.email,
+            isAdmin: data.isAdmin,
+          });
         }
       })
       .catch(() => setUser(null));
