@@ -5,8 +5,6 @@ import ProductGrid from "../../components/ProductGrid/ProductGrid";
 import Footer from "../../components/Footer/Footer";
 import CallToAction from "../../components/CallToAction/CallToAction";
 
-const API_URL = "http://localhost:8000";
-
 function Search() {
   const { slug } = useParams();
   const [products, setProducts] = useState([]);
@@ -16,7 +14,8 @@ function Search() {
   useEffect(() => {
     document.title = "Freaky Fashion";
 
-    fetch(`${API_URL}/api/products`)
+    // Load products from static JSON file
+    fetch("/products.json")
       .then((response) => response.json())
       .then((data) => {
         setProducts(data);

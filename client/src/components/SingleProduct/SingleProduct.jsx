@@ -10,8 +10,6 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-const API_URL = "http://localhost:8000";
-
 const ProductPage = ({ setProduct }) => {
   const navigate = useNavigate();
   const { addToBasket } = useBasketOperations();
@@ -30,12 +28,16 @@ const ProductPage = ({ setProduct }) => {
     async function fetchProduct() {
       setIsLoading(true);
       try {
-        const response = await fetch(`${API_URL}/api/products/${slug}`);
+        // Load products from static JSON file
+        const response = await fetch("/products.json");
         const data = await response.json();
 
-        if (data && data.product) {
-          setLocalProduct(data.product);
-          setProduct(data.product);
+        if (data && Array.isArray(data)) {
+          const foundProduct = data.find(p => p.slug === slug);
+          if (foundProduct) {
+            setLocalProduct(foundProduct);
+            setProduct(foundProduct);
+          }
         }
       } catch (error) {
         console.error("Error fetching product:", error);
@@ -52,7 +54,8 @@ const ProductPage = ({ setProduct }) => {
 
     async function fetchAllProducts() {
       try {
-        const response = await fetch(`${API_URL}/api/products`);
+        // Load products from static JSON file
+        const response = await fetch("/products.json");
         const data = await response.json();
 
         if (data && Array.isArray(data)) {

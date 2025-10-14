@@ -7,8 +7,6 @@ import Footer from "../../components/Footer/Footer";
 import StoreInformation from "../../components/StoreInformation/StoreInformation";
 import CallToAction from "../../components/CallToAction/CallToAction";
 
-const API_URL = "http://localhost:8000";
-
 function Home() {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -28,7 +26,8 @@ function Home() {
   useEffect(() => {
     document.title = "Freaky Fashion";
 
-    fetch(`${API_URL}/api/products`)
+    // Load products from static JSON file
+    fetch("/products.json")
       .then((response) => response.json())
       .then((data) => {
         const today = new Date();

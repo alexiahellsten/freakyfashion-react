@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "name": "Kläder",
+    "slug": "klader",
+    "description": "Fashion clothing items",
+    "image": "clothing.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Accessoarer",
+    "slug": "accessoarer",
+    "description": "Fashion accessories",
+    "image": "accessories.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Väskor",
+    "slug": "vaskor",
+    "description": "Bags and purses",
+    "image": "bags.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Skor",
+    "slug": "skor",
+    "description": "Footwear and shoes",
+    "image": "shoes.jpg"
+  }
+]

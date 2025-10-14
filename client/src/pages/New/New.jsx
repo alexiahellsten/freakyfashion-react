@@ -4,8 +4,6 @@ import ProductGrid from "../../components/ProductGrid/ProductGrid";
 import Footer from "../../components/Footer/Footer";
 import CallToAction from "../../components/CallToAction/CallToAction";
 
-const API_URL = "http://localhost:8000";
-
 function New() {
   const [newProducts, setNewProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,7 +11,8 @@ function New() {
   useEffect(() => {
     document.title = "Nyheter";
 
-    fetch(`${API_URL}/api/new`)
+    // Load products from static JSON file
+    fetch("/products.json")
       .then((response) => response.json())
       .then((data) => {
         // Filtrerar nya produkter som publicerats inom de senaste 7 dagarna
@@ -32,7 +31,7 @@ function New() {
 
             const isWithinRange =
               publicationDate >= sevenDaysAgo && publicationDate <= today;
-            const isNewProduct = product.isNew === 1;
+            const isNewProduct = product.isNew === true;
 
             return isWithinRange && isNewProduct;
           })
