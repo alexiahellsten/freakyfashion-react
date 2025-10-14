@@ -2,3 +2,4 @@ node_modules
 products.sql
 products.db
 server/.env
+.vercel
