@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Heart } from "lucide-react";
+import { Link } from "react-router";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "../../contexts/UserAuthContext";
 
@@ -7,12 +8,10 @@ function ProductGrid({ products, onFavoritesChange }) {
   const { user } = useAuth();
   const [favoriteProduct, setFavoriteProduct] = useState([]);
 
-  const API_URL = "http://localhost:8000";
-
   // Hämtar favoriter från backend-apiet eller sessionStorage (utloggad/gäst)
   const fetchFavorites = () => {
     if (user) {
-      fetch(`${API_URL}/api/favorites`, {
+      fetch(`http://localhost:8000/api/favorites`, {
         credentials: "include",
       })
         .then((res) => res.json())
@@ -92,14 +91,14 @@ function ProductGrid({ products, onFavoritesChange }) {
           className="relative group hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
         >
           <div className="relative overflow-hidden">
-            <a href={`/products/${product.slug}`} className="flex flex-col">
+            <Link to={`/products/${product.slug}`} className="flex flex-col">
               <div className="image-container w-full h-auto relative">
                 <img
                   src={
                     product.image.startsWith("http")
                       ? product.image
                       : product.image.startsWith("/images/")
-                      ? `${API_URL}${product.image}`
+                      ? product.image
                       : `/images/${product.image}`
                   }
                   alt={product.name}
@@ -114,7 +113,7 @@ function ProductGrid({ products, onFavoritesChange }) {
                   </p>
                 </div>
               )}
-            </a>
+            </Link>
 
             <div className="heart-container relative">
               <div className="heart-icon absolute text-2xl text-black bottom-2.5 right-2.5 z-10 transition-transform duration-300 group-hover:scale-110 cursor-pointer">

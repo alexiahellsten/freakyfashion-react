@@ -14,6 +14,7 @@ function Categories() {
     klader: "Kläder",
     accessoarer: "Accessoarer",
     skor: "Skor",
+    vaskor: "Väskor"
   };
 
   // Mappar slugs till kategoriernas namn
@@ -23,10 +24,22 @@ function Categories() {
 
   const fetchCategoryProducts = () => {
     setLoading(true);
-    fetch(`http://localhost:8000/api/categories/${slug}`)
+    // Load products from static JSON file and filter by category
+    fetch("/products.json")
       .then((response) => response.json())
       .then((data) => {
-        setCategoryProducts(data);
+        // Filter products by category slug
+        const filteredProducts = data.filter(product => {
+          // Map category_id to slug for filtering
+          const categoryMap = {
+            1: 'klader',
+            2: 'accessoarer', 
+            3: 'vaskor',
+            4: 'skor'
+          };
+          return categoryMap[product.category_id] === slug;
+        });
+        setCategoryProducts(filteredProducts);
         setLoading(false);
       })
       .catch((error) => {

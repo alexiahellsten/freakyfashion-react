@@ -12,10 +12,12 @@ function Navbar() {
     klader: "Kläder",
     accessoarer: "Accessoarer",
     skor: "Skor",
+    vaskor: "Väskor"
   };
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/categories")
+    // Load categories from static JSON file
+    fetch("/categories.json")
       .then((res) => res.json())
       .then((data) => setCategories(data))
       .catch((err) => console.error("Kunde inte hämta kategorier:", err));
