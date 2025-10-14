@@ -1,0 +1,33 @@
+{
+  "version": 2,
+  "buildCommand": "cd client && npm install && npm run build",
+  "outputDirectory": "server/public",
+  "builds": [
+    {
+      "src": "server/src/server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/server/src/server.js"
+    },
+    {
+      "src": "/admin/(.*)",
+      "dest": "/server/src/server.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/server/public/$1"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "functions": {
+    "server/src/server.js": {
+      "maxDuration": 30
+    }
+  }
+}

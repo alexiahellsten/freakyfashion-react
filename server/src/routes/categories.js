@@ -10,6 +10,7 @@ router.get("/", (req, res) => {
 // GET /api/categories/:slug
 router.get("/:slug", (req, res) => {
   const { slug } = req.params;
+
   try {
     // Hämtar category_id baserat på slug
     const category = db

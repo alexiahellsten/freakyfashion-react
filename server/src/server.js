@@ -26,9 +26,10 @@ const port = process.env.PORT || 8000;
 const app = express();
 
 //Konfiguerar CORS för att tillåta cookies
+const frontendUrl = process.env.FRONTEND_URL || "http://localhost:3000";
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: frontendUrl,
     credentials: true,
   })
 );
